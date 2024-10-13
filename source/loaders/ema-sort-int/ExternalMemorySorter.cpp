@@ -55,10 +55,8 @@ void sortChunk(std::ifstream& input, std::ofstream& output, size_t chunk_size_in
     output.write(reinterpret_cast<const char*>(buffer.data()), input.gcount());
 }
 
-
-
 // Perform external memory sort (disk-based chunk sorting)
-void ExternalMemorySorter::externalMemorySort(const std::string& input_filename, const std::string& output_filename, size_t chunk_size_in_mb) {
+void ExternalMemorySorter::sortByChunksAndSave(const std::string& input_filename, const std::string& output_filename, size_t chunk_size_mb) {
     std::ifstream input(input_filename, std::ios::binary);
     if (!input) {
         std::cerr << "Failed to open input file: " << input_filename << std::endl;
@@ -71,7 +69,7 @@ void ExternalMemorySorter::externalMemorySort(const std::string& input_filename,
         return;
     }
 
-    size_t chunk_size_in_elements = chunk_size_in_mb * 1024 * 1024 / sizeof(uint32_t);
+    size_t chunk_size_in_elements = chunk_size_mb * 1024 * 1024 / sizeof(uint32_t);
 
     // Get the total file size
     input.seekg(0, std::ios::end);
@@ -91,15 +89,32 @@ void ExternalMemorySorter::externalMemorySort(const std::string& input_filename,
     std::cout << "File sorted and written to " << output_filename << std::endl;
 }
 
+void ExternalMemorySorter::mergeChunksAndSave(
+    const std::string& input_filename,
+    const std::string& output_filename,
+    size_t file_size_mb,
+    size_t chunk_size_mb
+) {
+
+}
+
+void ExternalMemorySorter::externalMemorySort(
+    const std::string& input_filename, const std::string& temp_filename, size_t chunk_size_mb
+) {
+
+}
+
+
+
 // Check if the file is sorted and output chunk min/max information
-void ExternalMemorySorter::checkFileSorted(const std::string& input_filename, size_t chunk_size_in_mb) {
+void ExternalMemorySorter::checkFileSorted(const std::string& input_filename, size_t chunk_size_mb) {
     std::ifstream input(input_filename, std::ios::binary);
     if (!input) {
         std::cerr << "Failed to open input file: " << input_filename << std::endl;
         return;
     }
 
-    size_t chunk_size_in_elements = chunk_size_in_mb * 1024 * 1024 / sizeof(uint32_t);
+    size_t chunk_size_in_elements = chunk_size_mb * 1024 * 1024 / sizeof(uint32_t);
 
     // Get total file size
     input.seekg(0, std::ios::end);
