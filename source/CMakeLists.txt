@@ -29,6 +29,7 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         monolith/loaders/ema-sort-int/ExternalMemorySorter.hpp
         monolith/loaders/sleeper/Sleeper.hpp
         monolith/loaders/sleeper/Sleeper.cpp
+        monolith/loaders/ema-sort-int/ExternalMemorySorter.cpp
 )
 
 add_executable(sleeper

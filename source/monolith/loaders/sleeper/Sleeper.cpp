@@ -17,8 +17,9 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  int duration;
   try {
-    int duration = std::stoi(argv[1]);
+    duration = std::stoi(argv[1]);
     if (duration < 0) {
       std::cout << "Cannot sleep for a negative duration (time travels are not invented yet!)"
         << std::endl;
@@ -36,5 +37,8 @@ int main(int argc, char* argv[]) {
     return 4;
   }
 
+  std::cout << "Sleeping for " << duration << "ms... " << std::endl;
+  sleeper(duration);
+  std::cout << "Waking up." << std::endl;
   return 0;
 }
