@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
   if (command == "generate") {
     if (argc != 4) {
-      std::cerr << "Usage: prog generate <output_file> <size_mb>" << std::endl;
+      std::cout << "Usage: prog generate <output_file> <size_mb>" << std::endl;
       return 1;
     }
     std::string output_file = argv[2];
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
   }
   else if (command == "sort") {
     if (argc != 5) {
-      std::cerr << "Usage: prog sort <input_file> <output_file> <chunk_size_mb>" << std::endl;
+      std::cout << "Usage: prog sort <input_file> <output_file> <chunk_size_mb>" << std::endl;
       return 1;
     }
     std::string input_file = argv[2];
@@ -33,19 +33,18 @@ int main(int argc, char* argv[]) {
     ExternalMemorySorter::externalMemorySort(input_file, output_file, chunk_size_mb);
   }
   else if (command == "check") {
-    if (argc != 4) {
-      std::cerr << "Usage: prog check <input_file> <chunk_size_mb>" << std::endl;
+    if (argc != 3) {
+      std::cout << "Usage: prog check <input_file>" << std::endl;
       return 1;
     }
     std::string input_file = argv[2];
-    size_t chunk_size_mb = std::stoull(argv[3]);
-    ExternalMemorySorter::checkFileSorted(input_file, chunk_size_mb);
+    ExternalMemorySorter::checkFileSorted(input_file);
   }
   else if (command == "help") {
     ExternalMemorySorter::printHelp();
   }
   else {
-    std::cerr << "Unknown subcommand: " << command << std::endl;
+    std::cout << "Unknown subcommand: " << command << std::endl;
     ExternalMemorySorter::printHelp();
     return 1;
   }
