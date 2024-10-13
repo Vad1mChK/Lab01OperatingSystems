@@ -23,6 +23,9 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         monolith/shell/commands/ChangeDirectoryCommand.hpp
         monolith/shell/commands/ChangeDirectoryCommand.cpp
         monolith/shell/commands/ListFilesCommand.hpp
+        monolith/shell/commands/ListFilesCommand.cpp
+        monolith/shell/commands/RunCommand.hpp
+        monolith/shell/commands/RunCommand.cpp
 )
 
 set(MONOLITH_APP_SOURCES monolith/app/Main.cpp)
