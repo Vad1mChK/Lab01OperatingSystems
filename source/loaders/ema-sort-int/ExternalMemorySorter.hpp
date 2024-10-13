@@ -1,9 +1,12 @@
 #ifndef EXTERNAL_MEMORY_SORT_HPP
 #define EXTERNAL_MEMORY_SORT_HPP
 
+#include <cstdint>
 #include <string>
 
 class ExternalMemorySorter {
+private:
+  static uint32_t randomUint32();
 public:
   // Generate a random binary file of uint32_t values
   static void generateRandomFile(const std::string& filename, size_t size_in_mb);
