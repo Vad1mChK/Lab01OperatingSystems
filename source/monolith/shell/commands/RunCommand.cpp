@@ -55,7 +55,7 @@ int RunCommand::Run() {
             &pi)                       // Pointer to PROCESS_INFORMATION structure
     ) {
       const DWORD return_code = GetLastError();
-      std::cout << "CreateProcess failed with error code" << return_code << std::endl;
+      std::cout << "CreateProcess failed with error code " << return_code << std::endl;
       return 2;
     }
 
