@@ -26,7 +26,14 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         monolith/shell/commands/ListFilesCommand.cpp
         monolith/shell/commands/RunCommand.hpp
         monolith/shell/commands/RunCommand.cpp
+        monolith/loaders/ema-sort-int/ExternalMemorySorter.hpp
+        monolith/loaders/sleeper/Sleeper.hpp
+        monolith/loaders/sleeper/Sleeper.cpp
 )
+
+add_executable(sleeper
+        monolith/loaders/sleeper/Sleeper.cpp
+        monolith/loaders/sleeper/Sleeper.hpp)
 
 set(MONOLITH_APP_SOURCES monolith/app/Main.cpp)
 
