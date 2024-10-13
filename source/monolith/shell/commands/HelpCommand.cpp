@@ -9,7 +9,7 @@ const std::map<std::string, std::string> CommandNameToDescription = {
   { "help", "Output the list of available commands or info about a specific command. Usage: `help [command_name]`" },
   { "history", "Output last N commands (default N: 5). Usage: `history [n]`" },
   { "ls", "Lists all files in the working directory." },
-  { "cd", "Changes the working directory." },
+  { "cd", "Changes the working directory. Usage: `cd <directory_path>` (path is mandatory)" },
   { "pwd", "Prints the path to the working directory." },
   { "run", "Runs the executable and times execution. Usage: `run [program_name]`"}
 };

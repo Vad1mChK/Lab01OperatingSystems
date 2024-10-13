@@ -8,7 +8,9 @@
 #include "commands/ExitCommand.hpp"
 #include "commands/HelpCommand.hpp"
 #include "commands/HistoryCommand.hpp"
+#include "commands/ListFilesCommand.hpp"
 #include "commands/PathToWorkingDirectoryCommand.hpp"
+#include "commands/RunCommand.hpp"
 
 using CommandFactoryFunction =
     std::function<std::unique_ptr<Command>(const std::vector<std::string>&)>;
@@ -28,6 +30,10 @@ static const std::map<std::string, CommandFactoryFunction> command_map = {
      [](const std::vector<std::string>& args) {
      return std::make_unique<ChangeDirectoryCommand>(args);
      }                                                                                          },
+{     "ls",
+     [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }},
+{     "run",
+   [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }}
   // Add more command mappings here...
 };
 
