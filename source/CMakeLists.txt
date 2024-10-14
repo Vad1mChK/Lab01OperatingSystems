@@ -32,6 +32,9 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         loaders/ema-sort-int/ExternalMemorySorter.cpp
         loaders/ema-sort-int/main.cpp
         loaders/arg-printer/main.cpp
+        loaders/ram-sort-int/RamMemorySorter.hpp
+        loaders/ram-sort-int/RamMemorySorter.cpp
+        loaders/ram-sort-int/main.cpp
 )
 
 add_executable(sleeper
@@ -48,6 +51,28 @@ add_executable(ema-sort-int
         loaders/ema-sort-int/ExternalMemorySorter.hpp
         loaders/ema-sort-int/main.cpp
 )
+
+add_executable(ema-sort-int-opt
+        loaders/ema-sort-int/ExternalMemorySorter.cpp
+        loaders/ema-sort-int/ExternalMemorySorter.hpp
+        loaders/ema-sort-int/main.cpp
+)
+
+add_executable(ram-sort-int
+        loaders/ram-sort-int/RamMemorySorter.cpp
+        loaders/ram-sort-int/RamMemorySorter.hpp
+        loaders/ram-sort-int/main.cpp
+)
+
+add_executable(ram-sort-int-opt
+        loaders/ram-sort-int/RamMemorySorter.cpp
+        loaders/ram-sort-int/RamMemorySorter.hpp
+        loaders/ram-sort-int/main.cpp
+)
+
+target_compile_options(ema-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
+
+target_compile_options(ram-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
 
 set(MONOLITH_APP_SOURCES monolith/app/Main.cpp)
 
