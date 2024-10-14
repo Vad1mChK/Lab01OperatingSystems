@@ -35,6 +35,7 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         loaders/ram-sort-int/RamMemorySorter.hpp
         loaders/ram-sort-int/RamMemorySorter.cpp
         loaders/ram-sort-int/main.cpp
+        loaders/estimate-csort/main.cpp
 )
 
 add_executable(sleeper
@@ -69,6 +70,11 @@ add_executable(ram-sort-int-opt
         loaders/ram-sort-int/RamMemorySorter.hpp
         loaders/ram-sort-int/main.cpp
 )
+
+add_executable(estimate-csort
+        loaders/estimate-csort/main.cpp
+)
+
 
 target_compile_options(ema-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
 
