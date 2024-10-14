@@ -238,5 +238,7 @@ void ExternalMemorySorter::printHelp() {
               << "\tgenerate <output_file> <size_mb>\n\t\tGenerate a random binary file of uint32_t values\n"
               << "\tsort <input_file> <output_file> <chunk_size_mb>\n\t\tSort the file in chunks and save sorted result\n"
               << "\tcheck <input_file>\n\t\tCheck if the file is sorted\n"
-              << "\thelp\n\t\tPrint this help message (no args).\n";
+              << "\thelp\n\t\tPrint this help message (no args).\n"
+              << "\tfull-benchmark <input_file> <output_file> <repeat-count>\n\t\t"
+                 "Generate a 256MB file, sort it with 32MB chunk size, check the results, repeat everything several times.\n";
 }

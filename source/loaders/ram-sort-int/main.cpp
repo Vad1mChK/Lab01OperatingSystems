@@ -1,13 +1,13 @@
 //
-// Created by vadim on 13.10.2024.
+// Created by vadim on 14.10.2024.
 //
-#include "ExternalMemorySorter.hpp"
+#include "RamMemorySorter.hpp"
 #include <iostream>
 #include <string>
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
-    ExternalMemorySorter::printHelp();
+    RamMemorySorter::printHelp();
     return 1;
   }
 
@@ -20,17 +20,16 @@ int main(int argc, char* argv[]) {
     }
     std::string output_file = argv[2];
     size_t size_mb = std::stoull(argv[3]);
-    ExternalMemorySorter::generateRandomFile(output_file, size_mb);
+    RamMemorySorter::generateRandomFile(output_file, size_mb);
   }
   else if (command == "sort") {
-    if (argc != 5) {
-      std::cout << "Usage: prog sort <input_file> <output_file> <chunk_size_mb>" << std::endl;
+    if (argc != 4) {
+      std::cout << "Usage: prog sort <input_file> <output_file>" << std::endl;
       return 1;
     }
     std::string input_file = argv[2];
     std::string output_file = argv[3];
-    size_t chunk_size_mb = std::stoull(argv[4]);
-    ExternalMemorySorter::externalMemorySort(input_file, output_file, chunk_size_mb);
+    RamMemorySorter::sortInMemory(input_file, output_file);
   }
   else if (command == "check") {
     if (argc != 3) {
@@ -38,29 +37,29 @@ int main(int argc, char* argv[]) {
       return 1;
     }
     std::string input_file = argv[2];
-    ExternalMemorySorter::checkFileSorted(input_file);
-  }
-  else if (command == "help") {
-    ExternalMemorySorter::printHelp();
+    RamMemorySorter::checkFileSorted(input_file);
   }
   else if (command == "full-benchmark") {
     if (argc != 5) {
-      std::cout << "Usage: full-benchmark <input_file> <output_file> <repeat-count>" << std::endl;
+      std::cout << "Usage: prog full-benchmark <input_file> <output-file> <repeat-count>"
+        << std::endl;
       return 1;
     }
     std::string input_file = argv[2];
     std::string output_file = argv[3];
     size_t repeat_count = std::stoull(argv[4]);
-
     for (size_t i = 0; i < repeat_count; ++i) {
-      ExternalMemorySorter::generateRandomFile(input_file, 256);
-      ExternalMemorySorter::externalMemorySort(input_file, output_file, 32);
-      ExternalMemorySorter::checkFileSorted(output_file);
+      RamMemorySorter::generateRandomFile(input_file, 256);
+      RamMemorySorter::sortInMemory(input_file, output_file);
+      RamMemorySorter::checkFileSorted(output_file);
     }
   }
+  else if (command == "help") {
+    RamMemorySorter::printHelp();
+  }
   else {
-    std::cout << "Unknown subcommand: " << command << std::endl;
-    ExternalMemorySorter::printHelp();
+    std::cout << "Unknown command: " << command << std::endl;
+    RamMemorySorter::printHelp();
     return 1;
   }
 
