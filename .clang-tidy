@@ -13,10 +13,10 @@ Checks: '-*,
   -modernize-use-trailing-return-type,
   performance-*,
   readability-*'
-HeaderFileExtensions:
-  - hpp
-ImplementationFileExtensions:
-  - cpp
+#HeaderFileExtensions:
+#  - hpp
+#ImplementationFileExtensions:
+#  - cpp
 HeaderFilterRegex: ''
 FormatStyle: 'file'
 # SystemHeaders: false
