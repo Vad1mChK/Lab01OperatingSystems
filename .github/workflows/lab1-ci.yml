@@ -72,14 +72,14 @@ jobs:
       - name: Configure CMake
         run: |
           cmake -S . -B build -G "Ninja" `
-          -DCMAKE_C_COMPILER=clang `
-          -DCMAKE_CXX_COMPILER=clang++ `
-          -DCMAKE_CXX_FLAGS="-stdlib=libc++" `
-          -DBENCHMARK_USE_STD_REGEX=ON `
-          -DCMAKE_MAKE_PROGRAM=C:/ninja/ninja.exe
+            -DCMAKE_C_COMPILER=clang `
+            -DCMAKE_CXX_COMPILER=clang++ `
+            -DCMAKE_MAKE_PROGRAM=C:/ninja/ninja.exe `
+            -DBENCHMARK_USE_STD_REGEX=ON
 
       - name: Build the project
         run: cmake --build build
 
       - name: Run tests
         run: ctest --test-dir build --output-on-failure
+
