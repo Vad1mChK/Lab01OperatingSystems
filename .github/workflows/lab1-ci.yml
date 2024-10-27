@@ -11,21 +11,13 @@ on:
 
 jobs:
   lint:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest  # Use Ubuntu to run clang-format for linting
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Install Clang
-        run: choco install llvm -y
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
 
-      - name: Configure CMake
-        run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-
-      - name: Run C++ Lint
-        shell: pwsh
-        run: |
-          $files = Get-ChildItem -Recurse -Include *.cpp, *.h | ForEach-Object { $_.FullName }
-          foreach ($file in $files) {
-            & "C:\Program Files\LLVM\bin\clang-tidy.exe" $file -p build/
-          }
+      - name: Run clang-format
+        run: clang-format --dry-run --Werror --verbose $(find . -name '*.cpp' -or -name '*.hpp')
