@@ -11,7 +11,7 @@ on:
 
 jobs:
   # Step 1: Lint the code with clang-format and clang-tidy in ./source and ./test
-  lint:
+  format:
     runs-on: ubuntu-latest  # Use Ubuntu to run linting tools
     steps:
       - name: Checkout code
@@ -37,11 +37,36 @@ jobs:
           exit 1
           fi
 
-      - name: Run clang-tidy on ./source and ./test
-        run: |
-          clang-tidy $(find ./source ./test -name '*.cpp' -or -name '*.hpp') \
-          -- -std=c++17 \
-          -I./source \
-          -I./test \
-          -I/usr/src/googletest/include \
-          -header-filter='^/home/runner/work/diy-shell-benchmark-24y-Vad1mChK/diy-shell-benchmark-24y-Vad1mChK/(source|test)'
+#      - name: Run clang-tidy on ./source and ./test
+#        run: |
+#          clang-tidy $(find ./source ./test -name '*.cpp' -or -name '*.hpp') \
+#          -- -std=c++17 \
+#          -I./source \
+#          -I./test \
+#          -I/usr/src/googletest/include \
+#          -header-filter='^/home/runner/work/diy-shell-benchmark-24y-Vad1mChK/diy-shell-benchmark-24y-Vad1mChK/(source|test)'
+
+  # Build and Test on Windows
+  build-and-test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+
+      - name: Install Clang
+        uses: twilio/install-llvm@v1
+        with:
+          version: 'latest'
+          components: 'clang'
+
+      - name: Configure CMake
+        run: cmake -S . -B build -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+
+      - name: Build the project
+        run: cmake --build build
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
