@@ -71,9 +71,9 @@ jobs:
 
       - name: Configure CMake
         run: |
-          cmake -S . -B build -G "Ninja" ^
-          -DCMAKE_C_COMPILER=clang ^
-          -DCMAKE_CXX_COMPILER=clang++ ^
+          cmake -S . -B build -G "Ninja" `
+          -DCMAKE_C_COMPILER=clang `
+          -DCMAKE_CXX_COMPILER=clang++ `
           -DCMAKE_MAKE_PROGRAM=C:/ninja/ninja.exe
 
       - name: Build the project
