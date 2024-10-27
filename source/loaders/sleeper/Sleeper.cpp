@@ -25,7 +25,6 @@ int main(int argc, char* argv[]) {
         << std::endl;
       return 2;
     }
-    sleeper(duration);
   } catch (const std::invalid_argument& e) {
     std::cout << "The argument could not be converted to a number." << std::endl;
     return 3;
