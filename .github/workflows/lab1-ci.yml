@@ -47,20 +47,25 @@ jobs:
 #          -header-filter='^/home/runner/work/diy-shell-benchmark-24y-Vad1mChK/diy-shell-benchmark-24y-Vad1mChK/(source|test)'
 
   # Build and Test on Windows
+  # Build and Test on Windows
   build-and-test:
     runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install LLVM and Clang
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/LLVM-14.0.0-win64.exe" -OutFile "llvm-installer.exe"
+          Start-Process -FilePath "llvm-installer.exe" -ArgumentList "/S" -Wait
+          $env:Path += ";C:\Program Files\LLVM\bin"
+
+      - name: Verify Clang installation
+        run: clang --version
+
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
-
-      - name: Install Clang
-        uses: twilio/install-llvm@v1
-        with:
-          version: 'latest'
-          components: 'clang'
 
       - name: Configure CMake
         run: cmake -S . -B build -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
