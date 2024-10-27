@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../HelloWorld.hpp"
+#include "monolith/HelloWorld.hpp"
 
 namespace monolith::app {
 
