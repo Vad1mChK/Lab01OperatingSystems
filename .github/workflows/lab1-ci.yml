@@ -17,12 +17,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Clang
-        run: |
-          choco install llvm -y
-          choco install cmake -y
+        run: choco install llvm -y
+
+      - name: Configure CMake
+        run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
       - name: Run C++ Lint
         shell: pwsh
         run: |
-          $files = (Get-ChildItem -Recurse -Include *.cpp, *.h | ForEach-Object { $_.FullName }) -join ' '
-          & "C:\Program Files\LLVM\bin\clang-tidy.exe" $files -p build/
+          $files = Get-ChildItem -Recurse -Include *.cpp, *.h | ForEach-Object { $_.FullName }
+          foreach ($file in $files) {
+            & "C:\Program Files\LLVM\bin\clang-tidy.exe" $file -p build/
+          }
