@@ -15,16 +15,24 @@ jobs:
     runs-on: ubuntu-latest  # Use Ubuntu to run linting tools
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install clang tools
         run: sudo apt-get install -y clang-format clang-tidy
 
       - name: Install Google Test
-        run: sudo apt-get install -y libgtest-dev && sudo cmake -S /usr/src/googletest -B /usr/src/googletest/build && sudo cmake --build /usr/src/googletest/build && sudo cp /usr/src/googletest/build/lib/*.a /usr/lib
+        run: |
+          sudo apt-get install -y libgtest-dev && \
+          sudo cmake -S /usr/src/googletest -B /usr/src/googletest/build && \
+          sudo cmake --build /usr/src/googletest/build && sudo cp /usr/src/googletest/build/lib/*.a /usr/lib
 
       - name: Run clang-format on ./source and ./test
         run: clang-format --dry-run --Werror --verbose $(find ./source ./test -name '*.cpp' -or -name '*.hpp')
 
       - name: Run clang-tidy on ./source and ./test
-        run: clang-tidy $(find ./source ./test -name '*.cpp') -- -std=c++1
+        run: |
+          clang-tidy $(find ./source ./test -name '*.cpp' -or -name '*.hpp') \
+          -- -std=c++17 \
+          -I./source \
+          -I./test \
+          -I/usr/src/googletest/include
