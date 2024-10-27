@@ -19,7 +19,7 @@ ImplementationFileExtensions:
   - cpp
 HeaderFilterRegex: ''
 FormatStyle: 'file'
-SystemHeaders: false
+# SystemHeaders: false
 CheckOptions:
   - key: readability-identifier-naming.ClassCase
     value: CamelCase

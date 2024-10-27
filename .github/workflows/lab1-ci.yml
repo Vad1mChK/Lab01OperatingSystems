@@ -43,4 +43,5 @@ jobs:
           -- -std=c++17 \
           -I./source \
           -I./test \
-          -I/usr/src/googletest/include
+          -I/usr/src/googletest/include \
+          -header-filter='^/home/runner/work/diy-shell-benchmark-24y-Vad1mChK/diy-shell-benchmark-24y-Vad1mChK/(source|test)'
