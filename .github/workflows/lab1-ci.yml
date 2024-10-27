@@ -1,62 +1,58 @@
-name: Lab 1 pipeline
+name: Lab 1 Pipeline
 
 on:
   pull_request:
     branches:
-      - trunk  # Some svn-style naming convention here, svn sucks ass
+      - trunk
       - lab1
   push:
     branches:
       - lab1
 
 jobs:
-  # Step 1: Lint the code with clang-format and clang-tidy in ./source and ./test
-  format:
-    runs-on: ubuntu-latest  # Use Ubuntu to run linting tools
+  # Format and Lint the code with clang-format and clang-tidy
+  format-and-lint:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Install clang tools
-        run: sudo apt-get install -y clang-format clang-tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-format clang-tidy
 
-      - name: Install Google Test
+      - name: Generate compile_commands.json
         run: |
-          sudo apt-get install -y libgtest-dev && \
-          sudo cmake -S /usr/src/googletest -B /usr/src/googletest/build && \
-          sudo cmake --build /usr/src/googletest/build && sudo cp /usr/src/googletest/build/lib/*.a /usr/lib
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+          cd ..
 
       - name: Format code with clang-format
         run: |
-          find ./source ./test -name '*.cpp' -or -name '*.hpp' | xargs clang-format -i
+          find ./source ./test -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i
 
       - name: Verify clang-format
         run: |
-          if ! clang-format --dry-run --Werror $(find ./source ./test -name '*.cpp' -or -name '*.hpp'); then
-          echo "Code is not properly formatted!"
-          exit 1
+          if ! clang-format --dry-run --Werror $(find ./source ./test -name '*.cpp' -o -name '*.hpp'); then
+            echo "Code is not properly formatted!"
+            exit 1
           fi
 
-#      - name: Run clang-tidy on ./source and ./test
-#        run: |
-#          clang-tidy $(find ./source ./test -name '*.cpp' -or -name '*.hpp') \
-#          -- -std=c++17 \
-#          -I./source \
-#          -I./test \
-#          -I/usr/src/googletest/include \
-#          -header-filter='^/home/runner/work/diy-shell-benchmark-24y-Vad1mChK/diy-shell-benchmark-24y-Vad1mChK/(source|test)'
+      - name: Run clang-tidy on ./source
+        run: |
+          clang-tidy $(find ./source -name '*.cpp' -o -name '*.hpp') -p build -- -std=c++17 || echo "clang-tidy finished with warnings/errors"
 
   # Build and Test on Windows
   build-and-test:
     runs-on: windows-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install LLVM and Clang
         shell: pwsh
         run: |
-          Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/LLVM-14.0.0-win64.exe" -OutFile "llvm-installer.exe"
+          Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.6/LLVM-14.0.6-win64.exe" -OutFile "llvm-installer.exe"
           Start-Process -FilePath "llvm-installer.exe" -ArgumentList "/S" -Wait
           $env:Path += ";C:\Program Files\LLVM\bin"
 
@@ -66,15 +62,19 @@ jobs:
       - name: Install Ninja
         shell: pwsh
         run: |
-          Invoke-WebRequest -Uri "https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-win.zip" -OutFile "ninja.zip"
-          Expand-Archive -Path ninja.zip -DestinationPath "C:\ninja"
-          $env:Path += ";C:\ninja"
+          Invoke-WebRequest -Uri "https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-win.zip" -OutFile "ninja.zip"
+          Expand-Archive -Path ninja.zip -DestinationPath "C:\\ninja"
+          $env:Path += ";C:\\ninja"
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
 
       - name: Configure CMake
-        run: cmake -S . -B build -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_MAKE_PROGRAM=C:/ninja/ninja.exe
+        run: |
+          cmake -S . -B build -G "Ninja" ^
+          -DCMAKE_C_COMPILER=clang ^
+          -DCMAKE_CXX_COMPILER=clang++ ^
+          -DCMAKE_MAKE_PROGRAM=C:/ninja/ninja.exe
 
       - name: Build the project
         run: cmake --build build
