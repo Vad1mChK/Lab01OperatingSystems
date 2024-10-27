@@ -1,6 +1,8 @@
-#include "RunCommand.hpp"
-#include <windows.h>
 #include <iostream>
+#include "RunCommand.hpp"
+
+#ifdef _WIN32
+#include <windows.h>
 #include <string>
 
 // Helper function to measure high-resolution time
@@ -75,3 +77,11 @@ int RunCommand::Run() {
 
     return 0;
 }
+#else
+
+int RunCommand::Run() {
+  std::cout << "This code is not running on Windows." << std::endl;
+  return 1;
+}
+
+#endif

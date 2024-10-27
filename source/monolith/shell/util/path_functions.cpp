@@ -1,8 +1,9 @@
-#include <windows.h>
-
 #include <iostream>
 #include <string>
 #include <vector>
+
+#ifdef _WIN32
+#include <windows.h>
 
 //
 // Created by vadim on 12.10.2024.
@@ -95,3 +96,19 @@ static std::pair<std::vector<std::string>, int> listFiles(const std::string& pat
   // Return the list of files and success status (0)
   return { files, 0 };
 }
+
+#else
+
+std::pair<std::string, int> pwd() {
+  return { "This command requires a Windows system call to run.", 1 };
+}
+
+std::pair<std::string, int> cd(const std::string&) {
+  return { "This command requires a Windows system call to run.", 1 };
+}
+
+std::pair<std::vector<std::string>, int> ls(const std::string&) {
+  return { { "This command requires a Windows system call to run." }, 1 };
+}
+
+#endif
