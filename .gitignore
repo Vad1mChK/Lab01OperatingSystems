@@ -5,6 +5,7 @@ compile_commands.json
 # CMake
 build/
 build-*/
+cmake-build-debug/
 
 # Temporaries
 *.log

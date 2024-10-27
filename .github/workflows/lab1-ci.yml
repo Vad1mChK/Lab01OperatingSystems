@@ -1,0 +1,26 @@
+name: Lab 1 pipeline
+
+on:
+  pull_request:
+    branches:
+      - trunk  # Some svn-style naming convention here, svn sucks ass
+      - lab1
+  push:
+    branches:
+      - lab1
+
+jobs:
+  lint:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Clang
+        run: |
+          choco install llvm -y
+          choco install cmake -y
+
+      - name: Run C++ Lint
+        run: |
+          "C:\Program Files\LLVM\bin\clang-tidy.exe" **/*.cpp **/*.h -p build/
