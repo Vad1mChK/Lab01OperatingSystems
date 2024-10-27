@@ -47,7 +47,6 @@ jobs:
 #          -header-filter='^/home/runner/work/diy-shell-benchmark-24y-Vad1mChK/diy-shell-benchmark-24y-Vad1mChK/(source|test)'
 
   # Build and Test on Windows
-  # Build and Test on Windows
   build-and-test:
     runs-on: windows-latest
     steps:
@@ -63,6 +62,13 @@ jobs:
 
       - name: Verify Clang installation
         run: clang --version
+
+      - name: Install Ninja
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-win.zip" -OutFile "ninja.zip"
+          Expand-Archive -Path ninja.zip -DestinationPath "C:\ninja"
+          $env:Path += ";C:\ninja"
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
