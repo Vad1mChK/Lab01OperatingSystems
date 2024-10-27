@@ -46,40 +46,13 @@ jobs:
   build-and-test:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
 
-      - name: Install LLVM and Clang
-        shell: pwsh
-        run: |
-          Invoke-WebRequest -Uri "https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.6/LLVM-14.0.6-win64.exe" -OutFile "llvm-installer.exe"
-          Start-Process -FilePath "llvm-installer.exe" -ArgumentList "/S" -Wait
-          $env:Path += ";C:\Program Files\LLVM\bin"
+      - name: Configure and Build Project
+        uses: threeal/cmake-action@v1.3.0
+        with:
+          run-build: true
 
-      - name: Verify Clang installation
-        run: clang --version
-
-      - name: Install Ninja
-        shell: pwsh
-        run: |
-          Invoke-WebRequest -Uri "https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-win.zip" -OutFile "ninja.zip"
-          Expand-Archive -Path ninja.zip -DestinationPath "C:\\ninja"
-          $env:Path += ";C:\\ninja"
-
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v1
-
-      - name: Configure CMake
-        run: |
-          cmake -S . -B build -G "Ninja" `
-            -DCMAKE_C_COMPILER=clang `
-            -DCMAKE_CXX_COMPILER=clang++ `
-            -DCMAKE_MAKE_PROGRAM=C:/ninja/ninja.exe `
-            -DBENCHMARK_USE_STD_REGEX=ON
-
-      - name: Build the project
-        run: cmake --build build
-
-      - name: Run tests
-        run: ctest --test-dir build --output-on-failure
-
+      - name: Test Project
+        uses: threeal/ctest-action@v1.1.0
