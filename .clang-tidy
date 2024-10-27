@@ -18,7 +18,7 @@ HeaderFileExtensions:
 ImplementationFileExtensions:
   - cpp
 HeaderFilterRegex: ''
-FormatStyle: '.clang-format'
+FormatStyle: 'file'
 SystemHeaders: false
 CheckOptions:
   - key: readability-identifier-naming.ClassCase

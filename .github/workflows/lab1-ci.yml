@@ -20,6 +20,9 @@ jobs:
       - name: Install clang tools
         run: sudo apt-get install -y clang-format clang-tidy
 
+      - name: Install Google Test
+        run: sudo apt-get install -y libgtest-dev && sudo cmake -S /usr/src/googletest -B /usr/src/googletest/build && sudo cmake --build /usr/src/googletest/build && sudo cp /usr/src/googletest/build/lib/*.a /usr/lib
+
       - name: Run clang-format on ./source and ./test
         run: clang-format --dry-run --Werror --verbose $(find ./source ./test -name '*.cpp' -or -name '*.hpp')
 
