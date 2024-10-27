@@ -10,14 +10,18 @@ on:
       - lab1
 
 jobs:
+  # Step 1: Lint the code with clang-format and clang-tidy in ./source and ./test
   lint:
-    runs-on: ubuntu-latest  # Use Ubuntu to run clang-format for linting
+    runs-on: ubuntu-latest  # Use Ubuntu to run linting tools
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install clang-format
-        run: sudo apt-get install -y clang-format
+      - name: Install clang tools
+        run: sudo apt-get install -y clang-format clang-tidy
 
-      - name: Run clang-format
-        run: clang-format --dry-run --Werror --verbose $(find . -name '*.cpp' -or -name '*.hpp')
+      - name: Run clang-format on ./source and ./test
+        run: clang-format --dry-run --Werror --verbose $(find ./source ./test -name '*.cpp' -or -name '*.h')
+
+      - name: Run clang-tidy on ./source and ./test
+        run: clang-tidy $(find ./source ./test -name '*.cpp') -- -std=c++1
