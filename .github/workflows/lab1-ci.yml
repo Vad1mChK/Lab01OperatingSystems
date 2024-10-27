@@ -26,8 +26,16 @@ jobs:
           sudo cmake -S /usr/src/googletest -B /usr/src/googletest/build && \
           sudo cmake --build /usr/src/googletest/build && sudo cp /usr/src/googletest/build/lib/*.a /usr/lib
 
-      - name: Run clang-format on ./source and ./test
-        run: clang-format --dry-run --Werror --verbose $(find ./source ./test -name '*.cpp' -or -name '*.hpp')
+      - name: Format code with clang-format
+        run: |
+          find ./source ./test -name '*.cpp' -or -name '*.hpp' | xargs clang-format -i
+
+      - name: Verify clang-format
+        run: |
+          if ! clang-format --dry-run --Werror $(find ./source ./test -name '*.cpp' -or -name '*.hpp'); then
+          echo "Code is not properly formatted!"
+          exit 1
+          fi
 
       - name: Run clang-tidy on ./source and ./test
         run: |
