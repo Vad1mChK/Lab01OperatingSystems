@@ -13,6 +13,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${MONOLITH_INCLUDE_PATH})
 add_executable(${PROJECT_NAME}-app ${MONOLITH_APP_SOURCES})
 set_property(TARGET ${PROJECT_NAME}-app PROPERTY OUTPUT_NAME ${PROJECT_NAME})
 target_link_libraries(
-    ${PROJECT_NAME}-app PRIVATE
-    ${PROJECT_NAME}
+        ${PROJECT_NAME}-app PRIVATE
+        ${PROJECT_NAME}
 )

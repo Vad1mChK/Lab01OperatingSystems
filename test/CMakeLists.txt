@@ -10,10 +10,10 @@ add_executable(${MONOLITH_TEST_TARGET} ${MONOLITH_TEST_SOURCES})
 target_include_directories(${MONOLITH_TEST_TARGET} PUBLIC ${MONOLITH_TEST_INCLUDE_PATH})
 
 target_link_libraries(
-    ${MONOLITH_TEST_TARGET} PRIVATE
-    ${PROJECT_NAME}
-    GTest::gtest
-    GTest::gmock
+        ${MONOLITH_TEST_TARGET} PRIVATE
+        ${PROJECT_NAME}
+        GTest::gtest
+        GTest::gmock
 )
 
 gtest_discover_tests(${MONOLITH_TEST_TARGET})
