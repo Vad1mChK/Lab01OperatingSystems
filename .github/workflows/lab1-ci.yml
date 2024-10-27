@@ -21,7 +21,7 @@ jobs:
         run: sudo apt-get install -y clang-format clang-tidy
 
       - name: Run clang-format on ./source and ./test
-        run: clang-format --dry-run --Werror --verbose $(find ./source ./test -name '*.cpp' -or -name '*.h')
+        run: clang-format --dry-run --Werror --verbose $(find ./source ./test -name '*.cpp' -or -name '*.hpp')
 
       - name: Run clang-tidy on ./source and ./test
         run: clang-tidy $(find ./source ./test -name '*.cpp') -- -std=c++1
