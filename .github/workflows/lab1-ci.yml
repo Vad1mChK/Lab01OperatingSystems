@@ -74,6 +74,7 @@ jobs:
           cmake -S . -B build -G "Ninja" `
           -DCMAKE_C_COMPILER=clang `
           -DCMAKE_CXX_COMPILER=clang++ `
+          -DBENCHMARK_USE_STD_REGEX=ON `
           -DCMAKE_MAKE_PROGRAM=C:/ninja/ninja.exe
 
       - name: Build the project
