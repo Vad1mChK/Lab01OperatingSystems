@@ -2,13 +2,16 @@
 #include <chrono>
 #include <iostream>
 #include <vector>
+#include <random>
+
+const size_t Million = 1'000'000;
 
 int main() {
-  size_t N = 1'000'000;  // 1 million elements
-  std::vector<uint32_t> data(N);
+  size_t data_size = Million;  // 1 million elements
+  std::vector<uint32_t> data(data_size);
   // Initialize data with random numbers
   for (auto& val : data) {
-    val = rand();
+    val = random();
   }
 
   auto start = std::chrono::high_resolution_clock::now();
