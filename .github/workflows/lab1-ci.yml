@@ -39,15 +39,30 @@ jobs:
 
       - name: Run clang-tidy on ./source
         run: |
-          clang-tidy $(find ./source -name '*.cpp' -o -name '*.hpp') -p build -- -std=c++17 || echo "clang-tidy finished with warnings/errors"
+          clang-tidy $(find ./source -name '*.cpp') -p build -- -std=c++17
+          if [ $? -ne 0 ]; then
+            echo "clang-tidy found issues"
+            exit 1
+          fi
 
   test:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Fail (Will be replaced with actual logic)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake g++ gcc make
+
+      - name: Build the project
         run: |
-          exit 1
-      # TODO add test phase
+          mkdir -p build
+          cd build
+          cmake ..
+          make
+
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
