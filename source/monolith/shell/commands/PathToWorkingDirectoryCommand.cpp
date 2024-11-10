@@ -3,8 +3,6 @@
 //
 #include "PathToWorkingDirectoryCommand.hpp"
 
-#include <windows.h>
-
 #include <iostream>
 
 #include "monolith/shell/util/path_functions.hpp"
