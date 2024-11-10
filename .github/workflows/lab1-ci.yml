@@ -20,7 +20,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y clang-format clang-tidy
 
       - name: Cache Clang tools
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /usr/lib/llvm-*
           key: ${{ runner.os }}-clang-tools
@@ -64,7 +64,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y cmake g++ gcc make
 
       - name: Cache Build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: build
           key: ${{ runner.os }}-build-${{ github.sha }}
