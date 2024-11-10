@@ -17,7 +17,7 @@ int ChangeDirectoryCommand::Run() {
     return 3;
   }
 
-  auto [pwd_string, pwd_status_code] = cd(this->args_[0]);
+  auto [pwd_string, pwd_status_code] = Cd(this->args_[0]);
 
   if (pwd_status_code) {
     std::cout << "Error: " << pwd_string << '\n';

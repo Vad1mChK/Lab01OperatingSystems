@@ -11,7 +11,7 @@
 
 static std::pair<std::vector<std::string>, int> listFiles(const std::string& path);
 
-std::pair<std::string, int> pwd() {
+std::pair<std::string, int> Pwd() {
   // Get the required buffer size for the current directory
   DWORD buffer_size = GetCurrentDirectory(0, nullptr);
   if (buffer_size == 0) {
@@ -32,16 +32,16 @@ std::pair<std::string, int> pwd() {
   return {std::string(buffer.data()), 0};
 }
 
-// `cd` function: Changes the current directory
-std::pair<std::string, int> cd(const std::string& path) {
+// `Cd` function: Changes the current directory
+std::pair<std::string, int> Cd(const std::string& path) {
   // Attempt to change the current directory
   if (SetCurrentDirectory(path.c_str()) == 0) {
     // If the function fails, get the error message and return a failure status
     return {"Failed to change directory.", 1};
   }
 
-  // If successful, return the new directory (using `pwd` to retrieve it)
-  auto [new_directory, status] = pwd();
+  // If successful, return the new directory (using `Pwd` to retrieve it)
+  auto [new_directory, status] = Pwd();
   if (status != 0) {
     return {"Directory changed, but failed to retrieve the new directory.", 2};
   }
@@ -49,7 +49,7 @@ std::pair<std::string, int> cd(const std::string& path) {
   return {new_directory, 0};  // Return the new current directory and success status
 }
 
-std::pair<std::vector<std::string>, int> ls() {
+std::pair<std::vector<std::string>, int> Ls() {
   // Get the current directory
   DWORD buffer_size = GetCurrentDirectory(0, nullptr);
   if (buffer_size == 0) {
@@ -65,7 +65,7 @@ std::pair<std::vector<std::string>, int> ls() {
   return listFiles(std::string(buffer.data()));
 }
 
-std::pair<std::vector<std::string>, int> ls(const std::string& path) {
+std::pair<std::vector<std::string>, int> Ls(const std::string& path) {
   return listFiles(path);
 }
 
@@ -99,15 +99,19 @@ static std::pair<std::vector<std::string>, int> listFiles(const std::string& pat
 
 #else
 
-std::pair<std::string, int> pwd() {
+std::pair<std::string, int> Pwd() {
   return { "This command requires a Windows system call to run.", 1 };
 }
 
-std::pair<std::string, int> cd(const std::string&) {
+std::pair<std::string, int> Cd(const std::string&) {
   return { "This command requires a Windows system call to run.", 1 };
 }
 
-std::pair<std::vector<std::string>, int> ls(const std::string&) {
+std::pair<std::vector<std::string>, int> Ls() {
+  return { { "This command requires a Windows system call to run." }, 1 };
+}
+
+std::pair<std::vector<std::string>, int> Ls(const std::string&) {
   return { { "This command requires a Windows system call to run." }, 1 };
 }
 

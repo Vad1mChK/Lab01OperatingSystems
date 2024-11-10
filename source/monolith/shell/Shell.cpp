@@ -16,7 +16,7 @@ Shell::Shell() : running_(true), working_directory_("") {
 
 void Shell::Start() {
   std::cout << "Starting up shell." << '\n';
-  auto [pwd_string, pwd_status_code] = pwd();
+  auto [pwd_string, pwd_status_code] = Pwd();
   if (pwd_status_code != 0) {
     std::cout << "Failed to initialize working directory." << '\n';
     return;

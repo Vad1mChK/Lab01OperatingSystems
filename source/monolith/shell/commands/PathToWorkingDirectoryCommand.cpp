@@ -10,7 +10,7 @@
 #include "monolith/shell/util/path_functions.hpp"
 
 int PathToWorkingDirectoryCommand::Run() {
-  auto [pwd_string, pwd_status_code] = pwd();
+  auto [pwd_string, pwd_status_code] = Pwd();
 
   if (pwd_status_code != 0) {
     std::cout << "Error: ";

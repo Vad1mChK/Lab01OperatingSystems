@@ -18,7 +18,7 @@ int ListFilesCommand::Run() {
   try {
     switch (this->args_.size()) {
       case 0: {
-        auto [ls_files, ls_status_code] = ls();
+        auto [ls_files, ls_status_code] = Ls();
         std::cout << "Listing files and directories at path: " << shell_->GetWorkingDirectory()
                   << "" << '\n';
         if (ls_status_code != 0) {
@@ -29,7 +29,7 @@ int ListFilesCommand::Run() {
         return 0;
       }
       case 1: {
-        auto [ls_files, ls_status_code] = ls(this->args_[0]);
+        auto [ls_files, ls_status_code] = Ls(this->args_[0]);
         std::cout << "Listing files and directories at path: " << this->args_[0] << "" << '\n';
         if (ls_status_code != 0) {
           std::cout << "Error loading list of files." << '\n';
