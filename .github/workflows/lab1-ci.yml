@@ -19,6 +19,14 @@ jobs:
       - name: Install clang tools
         run: sudo apt-get update && sudo apt-get install -y clang-format clang-tidy
 
+      - name: Cache Clang tools
+        uses: actions/cache@v3
+        with:
+          path: /usr/lib/llvm-*
+          key: ${{ runner.os }}-clang-tools
+          restore-keys: |
+            ${{ runner.os }}-clang-tools
+
       - name: Generate compile_commands.json
         run: |
           mkdir -p build
@@ -55,6 +63,14 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake g++ gcc make
 
+      - name: Cache Build
+        uses: actions/cache@v3
+        with:
+          path: build
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build
+
       - name: Build the project
         run: |
           mkdir -p build
@@ -66,3 +82,10 @@ jobs:
         run: |
           cd build
           ctest --output-on-failure
+
+      - name: Upload test results
+        if: always() # Ensure results are uploaded even if tests fail
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: build/Testing/Temporary/LastTest.log
