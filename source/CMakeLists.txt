@@ -50,24 +50,32 @@ add_executable(arg-printer
 )
 
 add_executable(ema-sort-int
+#        loaders/util/sorter_utils.cpp
+#        loaders/util/sorter_utils.hpp
         loaders/ema-sort-int/ExternalMemorySorter.cpp
         loaders/ema-sort-int/ExternalMemorySorter.hpp
         loaders/ema-sort-int/main.cpp
 )
 
 add_executable(ema-sort-int-opt
+#        loaders/util/sorter_utils.cpp
+#        loaders/util/sorter_utils.hpp
         loaders/ema-sort-int/ExternalMemorySorter.cpp
         loaders/ema-sort-int/ExternalMemorySorter.hpp
         loaders/ema-sort-int/main.cpp
 )
 
 add_executable(ram-sort-int
+#        loaders/util/sorter_utils.cpp
+#        loaders/util/sorter_utils.hpp
         loaders/ram-sort-int/RamMemorySorter.cpp
         loaders/ram-sort-int/RamMemorySorter.hpp
         loaders/ram-sort-int/main.cpp
 )
 
 add_executable(ram-sort-int-opt
+#        loaders/util/sorter_utils.cpp
+#        loaders/util/sorter_utils.hpp
         loaders/ram-sort-int/RamMemorySorter.cpp
         loaders/ram-sort-int/RamMemorySorter.hpp
         loaders/ram-sort-int/main.cpp
