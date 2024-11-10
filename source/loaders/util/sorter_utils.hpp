@@ -7,7 +7,7 @@
 #include <cstddef>
 #include <cstdint>
 
-static const size_t BytesInMb = 1024 * 1024;
+static const size_t BytesInMb = static_cast<size_t>(1024 * 1024);
 
 uint32_t RandomUint32();
 
