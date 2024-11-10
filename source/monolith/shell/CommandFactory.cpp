@@ -17,24 +17,25 @@ using CommandFactoryFunction =
 
 std::map<std::string, CommandFactoryFunction> CommandMap() {
   return {
-    {   "help",
-     [](const std::vector<std::string>& args) { return std::make_unique<HelpCommand>(args); }          },
-    {   "exit",
-     [](const std::vector<std::string>& args) { return std::make_unique<ExitCommand>(args); }          },
-    {"history",
-     [](const std::vector<std::string>& args) { return std::make_unique<HistoryCommand>(args); }       },
-    {    "pwd",
-     [](const std::vector<std::string>& args) {
-     return std::make_unique<PathToWorkingDirectoryCommand>(args);
-     }                                                                                                 },
-    {     "cd",
-     [](const std::vector<std::string>& args) {
-     return std::make_unique<ChangeDirectoryCommand>(args);
-     }                                                                                                 },
-    {     "ls",
-     [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }     },
-    {    "run", [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }}
-    // Add more command mappings here...
+      {   "help",
+       [](const std::vector<std::string>& args) { return std::make_unique<HelpCommand>(args); }     },
+      {   "exit",
+       [](const std::vector<std::string>& args) { return std::make_unique<ExitCommand>(args); }     },
+      {"history",
+       [](const std::vector<std::string>& args) { return std::make_unique<HistoryCommand>(args); }  },
+      {    "pwd",
+       [](const std::vector<std::string>& args) {
+       return std::make_unique<PathToWorkingDirectoryCommand>(args);
+       }                                                                                            },
+      {     "cd",
+       [](const std::vector<std::string>& args) {
+       return std::make_unique<ChangeDirectoryCommand>(args);
+       }                                                                                            },
+      {     "ls",
+       [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }},
+      {    "run",
+       [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }      }
+      // Add more command mappings here...
   };
 }
 

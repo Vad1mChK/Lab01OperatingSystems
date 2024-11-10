@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#include "monolith/shell/util/path_functions.hpp"
+#include "../util/path_functions.hpp"
 //
 // Created by vadim on 12.10.2024.
 //
 
-void printList(std::vector<std::string> strings);
+void PrintList(std::vector<std::string> strings);
 
 int ListFilesCommand::Run() {
   if (this->shell_ == nullptr) {
@@ -25,7 +25,7 @@ int ListFilesCommand::Run() {
           std::cout << "Error loading list of files." << '\n';
           return ls_status_code;
         }
-        printList(ls_files);
+        PrintList(ls_files);
         return 0;
       }
       case 1: {
@@ -35,7 +35,7 @@ int ListFilesCommand::Run() {
           std::cout << "Error loading list of files." << '\n';
           return ls_status_code;
         }
-        printList(ls_files);
+        PrintList(ls_files);
         return 0;
       }
       default: {
@@ -49,7 +49,7 @@ int ListFilesCommand::Run() {
   }
 }
 
-void printList(std::vector<std::string> strings) {
+void PrintList(std::vector<std::string> strings) {
   for (auto str : strings) {
     std::cout << "- " << str << '\n';
   }

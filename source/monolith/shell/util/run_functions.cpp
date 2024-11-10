@@ -20,7 +20,7 @@
 #include <chrono>
 #include <cstring>
 
-static std::pair<bool, int> _runProgram(std::vector<const char*> argv);
+static std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv);
 
 int RunProgram(std::vector<std::string>& args) {
   std::vector<const char*> argv;
@@ -32,7 +32,7 @@ int RunProgram(std::vector<std::string>& args) {
 
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  auto [hasExecuted, statusCode] = _runProgram(argv);
+  auto [hasExecuted, statusCode] = RunProgramUtil(argv);
   if (!hasExecuted) {
     std::cout << "Failed to execute program." << '\n';
   } else {
@@ -46,7 +46,7 @@ int RunProgram(std::vector<std::string>& args) {
   return statusCode;
 }
 
-static std::pair<bool, int> _runProgram(std::vector<const char*> argv) {
+std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
   // Use clone3 for process creation
   struct clone_args cl_args = {};
   cl_args.flags = 0;  // No special flags

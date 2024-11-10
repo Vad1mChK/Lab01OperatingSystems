@@ -55,6 +55,7 @@ add_executable(ema-sort-int
         loaders/ema-sort-int/ExternalMemorySorter.cpp
         loaders/ema-sort-int/ExternalMemorySorter.hpp
         loaders/ema-sort-int/main.cpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
 )
 
 add_executable(ema-sort-int-opt
@@ -63,6 +64,7 @@ add_executable(ema-sort-int-opt
         loaders/ema-sort-int/ExternalMemorySorter.cpp
         loaders/ema-sort-int/ExternalMemorySorter.hpp
         loaders/ema-sort-int/main.cpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
 )
 
 add_executable(ram-sort-int
@@ -71,6 +73,7 @@ add_executable(ram-sort-int
         loaders/ram-sort-int/RamMemorySorter.cpp
         loaders/ram-sort-int/RamMemorySorter.hpp
         loaders/ram-sort-int/main.cpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
 )
 
 add_executable(ram-sort-int-opt
@@ -79,6 +82,7 @@ add_executable(ram-sort-int-opt
         loaders/ram-sort-int/RamMemorySorter.cpp
         loaders/ram-sort-int/RamMemorySorter.hpp
         loaders/ram-sort-int/main.cpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
 )
 
 add_executable(estimate-csort

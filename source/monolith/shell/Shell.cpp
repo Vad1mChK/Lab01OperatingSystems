@@ -12,11 +12,11 @@
 #include "util/path_functions.hpp"
 #include "util/unistd_check.hpp"
 
-Shell::Shell() : input_(std::cin), output_(std::cout), running_(true), working_directory_("") {
+Shell::Shell() : input_(std::cin), output_(std::cout), running_(true) {
 }
 
 Shell::Shell(std::istream& input, std::ostream& output)
-    : input_(input), output_(output), running_(true), working_directory_("") {
+    : input_(input), output_(output), running_(true) {
 }
 
 void Shell::PrintPlatform() {

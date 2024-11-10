@@ -18,7 +18,7 @@ void RamMemorySorter::generateRandomFile(const std::string& filename, size_t siz
     return;
   }
 
-  size_t num_elements = size_mb * 1024 * 1024 / sizeof(uint32_t);
+  size_t num_elements = size_mb * BytesInMb / sizeof(uint32_t);
 
   for (size_t i = 0; i < num_elements; ++i) {
     uint32_t number = RandomUint32();

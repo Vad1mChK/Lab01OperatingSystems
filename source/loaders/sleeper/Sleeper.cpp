@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  int duration;
+  int duration = 0;
   try {
     duration = std::stoi(argv[1]);
     if (duration < 0) {

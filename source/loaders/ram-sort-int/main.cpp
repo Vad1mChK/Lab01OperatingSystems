@@ -5,9 +5,10 @@
 #include <string>
 
 #include "RamMemorySorter.hpp"
+#include "loaders/util/ema_ram_sorter_cli_constants.hpp"
 
 int main(int argc, char* argv[]) {
-  if (argc < 2) {
+  if (argc < ArgcMin) {
     RamMemorySorter::printHelp();
     return 1;
   }
@@ -15,7 +16,7 @@ int main(int argc, char* argv[]) {
   std::string command = argv[1];
 
   if (command == "generate") {
-    if (argc != 4) {
+    if (argc != ArgcForGenerate) {
       std::cout << "Usage: prog generate <output_file> <size_mb>" << '\n';
       return 1;
     }
@@ -23,7 +24,7 @@ int main(int argc, char* argv[]) {
     size_t size_mb = std::stoull(argv[3]);
     RamMemorySorter::generateRandomFile(output_file, size_mb);
   } else if (command == "sort") {
-    if (argc != 4) {
+    if (argc != ArgcForRamSort) {
       std::cout << "Usage: prog sort <input_file> <output_file>" << '\n';
       return 1;
     }
@@ -31,14 +32,14 @@ int main(int argc, char* argv[]) {
     std::string output_file = argv[3];
     RamMemorySorter::sortInMemory(input_file, output_file);
   } else if (command == "check") {
-    if (argc != 3) {
+    if (argc != ArgcForCheck) {
       std::cout << "Usage: prog check <input_file>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
     RamMemorySorter::checkFileSorted(input_file);
   } else if (command == "full-benchmark") {
-    if (argc != 5) {
+    if (argc != ArgcForFull) {
       std::cout << "Usage: prog full-benchmark <input_file> <output-file> <repeat-count>" << '\n';
       return 1;
     }

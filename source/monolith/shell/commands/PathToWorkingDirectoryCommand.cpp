@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "monolith/shell/util/path_functions.hpp"
+#include "../util/path_functions.hpp"
 
 int PathToWorkingDirectoryCommand::Run() {
   auto [pwd_string, pwd_status_code] = Pwd();

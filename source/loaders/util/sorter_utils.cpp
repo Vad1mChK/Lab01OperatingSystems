@@ -1,4 +1,5 @@
 #include "sorter_utils.hpp"
+
 #include <random>
 
 uint32_t RandomUint32() {
