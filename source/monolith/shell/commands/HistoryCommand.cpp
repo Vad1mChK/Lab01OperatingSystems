@@ -5,6 +5,8 @@
 // Created by vadim on 12.10.2024.
 //
 
+const static size_t DefaultHistorySize = 5;
+
 static int PrintHistory(std::stack<std::string>& history_stack, size_t history_size);
 
 int HistoryCommand::Run() {
@@ -13,7 +15,7 @@ int HistoryCommand::Run() {
     return -1;
   }
 
-  size_t history_size = 5;
+  size_t history_size = DefaultHistorySize;
   std::stack<std::string> history = this->shell_->GetHistory();
 
   try {
