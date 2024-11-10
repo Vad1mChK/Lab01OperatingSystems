@@ -201,12 +201,12 @@ void ExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
         return;
     }
 
-    uint32_t prev_value;
+    uint32_t prev_value = 0;
     bool first = true;
     bool is_sorted = true;
 
     while (true) {
-        uint32_t current_value;
+        uint32_t current_value = 0;
         if (!input.read(reinterpret_cast<char*>(&current_value), sizeof(uint32_t))) {
             break;  // EOF
         }
