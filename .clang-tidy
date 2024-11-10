@@ -12,7 +12,10 @@ Checks: '-*,
   modernize-*,
   -modernize-use-trailing-return-type,
   performance-*,
-  readability-*'
+  readability-*,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-type-vararg,
+  -hicpp-vararg'
 #HeaderFileExtensions:
 #  - hpp
 #ImplementationFileExtensions:
