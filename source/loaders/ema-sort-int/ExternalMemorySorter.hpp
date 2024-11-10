@@ -6,8 +6,6 @@
 
 class ExternalMemorySorter {
 private:
-  static uint32_t randomUint32();
-
   static void sortByChunksAndSave(
       const std::string& input_filename, const std::string& temp_directory, size_t chunk_size_mb
   );

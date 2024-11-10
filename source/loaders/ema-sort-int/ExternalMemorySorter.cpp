@@ -11,29 +11,24 @@
 #include <sstream>
 #include <vector>
 
-uint32_t ExternalMemorySorter::randomUint32() {
-  static std::random_device rd;
-  static std::mt19937 engine(rd());
-  static std::uniform_int_distribution<uint32_t> dist(0, std::numeric_limits<uint32_t>::max());
-  return dist(engine);
-}
+#include "../util/sorter_utils.hpp"
 
 // Generate a random binary file of uint32_t values
-void ExternalMemorySorter::generateRandomFile(const std::string& filename, size_t size_in_mb) {
+void ExternalMemorySorter::generateRandomFile(const std::string& filename, size_t size_mb) {
   std::ofstream file(filename, std::ios::binary);
   if (!file) {
     std::cerr << "Failed to open file for writing: " << filename << '\n';
     return;
   }
 
-  size_t num_elements = size_in_mb * 1024 * 1024 / sizeof(uint32_t);
+  size_t num_elements = size_mb * BytesInMb / sizeof(uint32_t);
 
   for (size_t i = 0; i < num_elements; ++i) {
-    uint32_t number = randomUint32();
+    uint32_t number = RandomUint32();
     file.write(reinterpret_cast<const char*>(&number), sizeof(number));
   }
 
-  std::cout << "Random file generated: " << filename << " (" << size_in_mb << " MB)" << '\n';
+  std::cout << "Random file generated: " << filename << " (" << size_mb << " MB)" << '\n';
 }
 
 // Sort chunks of the input file and save them as temporary files
@@ -46,7 +41,7 @@ void ExternalMemorySorter::sortByChunksAndSave(
     return;
   }
 
-  size_t chunk_size_in_elements = chunk_size_mb * 1024 * 1024 / sizeof(uint32_t);
+  size_t chunk_size_in_elements = chunk_size_mb * BytesInMb / sizeof(uint32_t);
   std::vector<uint32_t> buffer(chunk_size_in_elements);
 
   input.seekg(0, std::ios::end);
@@ -177,7 +172,7 @@ void ExternalMemorySorter::externalMemorySort(
   size_t file_size_in_bytes = input.tellg();
   input.close();
 
-  size_t chunk_size_in_bytes = chunk_size_mb * 1024 * 1024;
+  size_t chunk_size_in_bytes = chunk_size_mb * BytesInMb;
   size_t num_chunks = (file_size_in_bytes + chunk_size_in_bytes - 1) / chunk_size_in_bytes;
 
   // Step 3: Merge the sorted chunks into the final output file

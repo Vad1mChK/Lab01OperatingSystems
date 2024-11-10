@@ -8,12 +8,7 @@
 #include <random>
 #include <vector>
 
-uint32_t randomUint32() {
-  static std::random_device rd;
-  static std::mt19937 engine(rd());
-  static std::uniform_int_distribution<uint32_t> dist(0, std::numeric_limits<uint32_t>::max());
-  return dist(engine);
-}
+#include "loaders/util/sorter_utils.hpp"
 
 // Generate a random binary file of uint32_t values
 void RamMemorySorter::generateRandomFile(const std::string& filename, size_t size_mb) {
@@ -26,7 +21,7 @@ void RamMemorySorter::generateRandomFile(const std::string& filename, size_t siz
   size_t num_elements = size_mb * 1024 * 1024 / sizeof(uint32_t);
 
   for (size_t i = 0; i < num_elements; ++i) {
-    uint32_t number = randomUint32();
+    uint32_t number = RandomUint32();
     file.write(reinterpret_cast<const char*>(&number), sizeof(number));
   }
 
