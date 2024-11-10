@@ -1,13 +1,15 @@
 #include <gtest/gtest.h>
+
 #include <fstream>
-#include <vector>
 #include <string>
+#include <vector>
+
 #include "loaders/ema-sort-int/ExternalMemorySorter.hpp"
 
 // Test fixture class
 class ExternalMemorySorterTest : public ::testing::Test {
 protected:
-  std::string temp_dir = "./"; // Use current directory for temp files
+  std::string temp_dir = "./";  // Use current directory for temp files
 
   // Helper function to read a binary file into a vector
   std::vector<uint32_t> readBinaryFile(const std::string& filename) {
@@ -55,11 +57,14 @@ TEST_F(ExternalMemorySorterTest, ExternalMemorySort) {
   ASSERT_NO_THROW(ExternalMemorySorter::generateRandomFile(input_filename, file_size_mb));
 
   // Step 2: Sort the file
-  ASSERT_NO_THROW(ExternalMemorySorter::externalMemorySort(input_filename, output_filename, chunk_size_mb));
+  ASSERT_NO_THROW(
+      ExternalMemorySorter::externalMemorySort(input_filename, output_filename, chunk_size_mb)
+  );
 
   // Step 3: Verify the file is sorted
   std::vector<uint32_t> sorted_data = readBinaryFile(output_filename);
-  ASSERT_TRUE(std::is_sorted(sorted_data.begin(), sorted_data.end())) << "Output file is not sorted.";
+  ASSERT_TRUE(std::is_sorted(sorted_data.begin(), sorted_data.end()))
+      << "Output file is not sorted.";
 
   // Cleanup
   deleteFile(input_filename);

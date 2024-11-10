@@ -8,4 +8,4 @@
 
 void sleeper(uint32_t milliseconds);
 
-#endif //SLEEPER_HPP
+#endif  // SLEEPER_HPP

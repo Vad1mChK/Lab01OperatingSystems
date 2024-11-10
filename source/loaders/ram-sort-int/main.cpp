@@ -1,9 +1,10 @@
 //
 // Created by vadim on 14.10.2024.
 //
-#include "RamMemorySorter.hpp"
 #include <iostream>
 #include <string>
+
+#include "RamMemorySorter.hpp"
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
@@ -21,8 +22,7 @@ int main(int argc, char* argv[]) {
     std::string output_file = argv[2];
     size_t size_mb = std::stoull(argv[3]);
     RamMemorySorter::generateRandomFile(output_file, size_mb);
-  }
-  else if (command == "sort") {
+  } else if (command == "sort") {
     if (argc != 4) {
       std::cout << "Usage: prog sort <input_file> <output_file>" << '\n';
       return 1;
@@ -30,19 +30,16 @@ int main(int argc, char* argv[]) {
     std::string input_file = argv[2];
     std::string output_file = argv[3];
     RamMemorySorter::sortInMemory(input_file, output_file);
-  }
-  else if (command == "check") {
+  } else if (command == "check") {
     if (argc != 3) {
       std::cout << "Usage: prog check <input_file>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
     RamMemorySorter::checkFileSorted(input_file);
-  }
-  else if (command == "full-benchmark") {
+  } else if (command == "full-benchmark") {
     if (argc != 5) {
-      std::cout << "Usage: prog full-benchmark <input_file> <output-file> <repeat-count>"
-        << '\n';
+      std::cout << "Usage: prog full-benchmark <input_file> <output-file> <repeat-count>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
@@ -53,11 +50,9 @@ int main(int argc, char* argv[]) {
       RamMemorySorter::sortInMemory(input_file, output_file);
       RamMemorySorter::checkFileSorted(output_file);
     }
-  }
-  else if (command == "help") {
+  } else if (command == "help") {
     RamMemorySorter::printHelp();
-  }
-  else {
+  } else {
     std::cout << "Unknown command: " << command << '\n';
     RamMemorySorter::printHelp();
     return 1;

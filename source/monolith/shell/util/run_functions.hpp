@@ -4,8 +4,8 @@
 
 #ifndef RUN_FUNCTIONS_H
 #define RUN_FUNCTIONS_H
-#include <vector>
 #include <string>
+#include <vector>
 
 int RunProgram(std::vector<std::string>& args);
 

@@ -3,11 +3,11 @@
 //
 #include "Command.hpp"
 
+#include <functional>
 #include <iostream>
 #include <regex>
 #include <string>
 #include <vector>
-#include <functional>
 
 #include "Shell.hpp"
 

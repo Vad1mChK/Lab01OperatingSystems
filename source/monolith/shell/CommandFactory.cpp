@@ -17,24 +17,23 @@ using CommandFactoryFunction =
 
 static const std::map<std::string, CommandFactoryFunction> command_map = {
     {   "help",
-     [](const std::vector<std::string>& args) { return std::make_unique<HelpCommand>(args); }   },
+     [](const std::vector<std::string>& args) { return std::make_unique<HelpCommand>(args); }          },
     {   "exit",
-     [](const std::vector<std::string>& args) { return std::make_unique<ExitCommand>(args); }   },
+     [](const std::vector<std::string>& args) { return std::make_unique<ExitCommand>(args); }          },
     {"history",
-     [](const std::vector<std::string>& args) { return std::make_unique<HistoryCommand>(args); }},
+     [](const std::vector<std::string>& args) { return std::make_unique<HistoryCommand>(args); }       },
     {    "pwd",
      [](const std::vector<std::string>& args) {
      return std::make_unique<PathToWorkingDirectoryCommand>(args);
-     }                                                                                          },
+     }                                                                                                 },
     {     "cd",
      [](const std::vector<std::string>& args) {
      return std::make_unique<ChangeDirectoryCommand>(args);
-     }                                                                                          },
-{     "ls",
-     [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }},
-{     "run",
-   [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }}
-  // Add more command mappings here...
+     }                                                                                                 },
+    {     "ls",
+     [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }     },
+    {    "run", [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }}
+    // Add more command mappings here...
 };
 
 std::unique_ptr<Command> CommandFactory(

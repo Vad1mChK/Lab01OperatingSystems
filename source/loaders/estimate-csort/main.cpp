@@ -1,7 +1,7 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <chrono>
+#include <iostream>
+#include <vector>
 
 int main() {
   size_t N = 1'000'000;  // 1 million elements

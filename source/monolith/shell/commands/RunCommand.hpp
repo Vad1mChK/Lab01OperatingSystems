@@ -15,4 +15,4 @@ public:
   int Run() override;
 };
 
-#endif //RUNCOMMAND_HPP
+#endif  // RUNCOMMAND_HPP

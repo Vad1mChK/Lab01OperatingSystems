@@ -15,4 +15,4 @@ public:
   int Run() override;
 };
 
-#endif //LISTFILESCOMMAND_H
+#endif  // LISTFILESCOMMAND_H

@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     duration = std::stoi(argv[1]);
     if (duration < 0) {
       std::cout << "Cannot sleep for a negative duration (time travels are not invented yet!)"
-        << '\n';
+                << '\n';
       return 2;
     }
   } catch (const std::invalid_argument& e) {

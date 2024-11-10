@@ -8,9 +8,10 @@
 
 class ExitCommand : public Command {
 public:
-  ExitCommand(const std::vector<std::string>& args) : Command(args) {}
+  ExitCommand(const std::vector<std::string>& args) : Command(args) {
+  }
 
   int Run() override;
 };
 
-#endif //EXITCOMMAND_HPP
+#endif  // EXITCOMMAND_HPP

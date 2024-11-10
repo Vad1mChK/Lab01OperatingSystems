@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
+
+#include <cstdint>
 #include <fstream>
 #include <vector>
-#include <cstdint>
+
 #include "loaders/ram-sort-int/RamMemorySorter.hpp"
 
 // Helper function to read binary file into a vector
@@ -71,8 +73,9 @@ TEST_F(RamMemorySorterTest, CheckFileNotSorted) {
   std::ofstream file(testInputFile, std::ios::binary);
   ASSERT_TRUE(file.is_open()) << "Failed to open test file for writing.";
   std::vector<uint32_t> unsortedData = {5, 3, 8, 1, 7};
-  file.write(reinterpret_cast<const char*>(unsortedData.data()),
-             unsortedData.size() * sizeof(uint32_t));
+  file.write(
+      reinterpret_cast<const char*>(unsortedData.data()), unsortedData.size() * sizeof(uint32_t)
+  );
   file.close();
 
   // Check if the file is detected as unsorted

@@ -9,15 +9,11 @@ private:
   static uint32_t randomUint32();
 
   static void sortByChunksAndSave(
-      const std::string& input_filename,
-      const std::string& temp_directory,
-      size_t chunk_size_mb
+      const std::string& input_filename, const std::string& temp_directory, size_t chunk_size_mb
   );
 
   static void mergeChunksAndSave(
-      const std::string& temp_directory,
-      const std::string& output_filename,
-      size_t num_chunks
+      const std::string& temp_directory, const std::string& output_filename, size_t num_chunks
   );
 
 public:
@@ -26,9 +22,7 @@ public:
 
   // Sort a large file in chunks and write sorted chunks to the output file
   static void externalMemorySort(
-      const std::string& input_filename,
-      const std::string& output_filename,
-      size_t chunk_size_mb
+      const std::string& input_filename, const std::string& output_filename, size_t chunk_size_mb
   );
 
   // Check if the file is sorted
@@ -38,4 +32,4 @@ public:
   static void printHelp();
 };
 
-#endif // EXTERNAL_MEMORY_SORT_HPP
+#endif  // EXTERNAL_MEMORY_SORT_HPP

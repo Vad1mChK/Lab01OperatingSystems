@@ -15,4 +15,4 @@ public:
   int Run() override;
 };
 
-#endif //PATHTOWORKINGDIRECTORYCOMMAND_HPP
+#endif  // PATHTOWORKINGDIRECTORYCOMMAND_HPP

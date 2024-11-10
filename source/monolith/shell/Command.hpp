@@ -2,15 +2,17 @@
 #define COMMAND_HPP
 #include <string>
 #include <vector>
+
 #include "Shell.hpp"
 
 class Command {
 protected:
-  std::vector<std::string> args_; // Arguments passed to the command
-  Shell* shell_; // Pointer to Shell
+  std::vector<std::string> args_;  // Arguments passed to the command
+  Shell* shell_;                   // Pointer to Shell
 
 public:
-  Command(const std::vector<std::string>& args) : args_(args), shell_(nullptr) {}
+  Command(const std::vector<std::string>& args) : args_(args), shell_(nullptr) {
+  }
 
   virtual ~Command() = default;
 
@@ -21,4 +23,4 @@ public:
   std::vector<std::string> GetArgs() const;
 };
 
-#endif // COMMAND_HPP
+#endif  // COMMAND_HPP

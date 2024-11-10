@@ -3,7 +3,9 @@
 //
 
 #include "ChangeDirectoryCommand.hpp"
+
 #include <iostream>
+
 #include "../util/path_functions.hpp"
 
 int ChangeDirectoryCommand::Run() {

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+
 #include <sstream>
+
 #include "monolith/shell/Shell.hpp"
 #include "monolith/shell/util/unistd_check.hpp"
 
@@ -10,8 +12,8 @@ protected:
   Shell* shell;
 
   void SetUp() override {
-    mock_input.str("");  // Clear input
-    mock_output.str(""); // Clear output
+    mock_input.str("");   // Clear input
+    mock_output.str("");  // Clear output
     shell = new Shell(mock_input, mock_output);
     ASSERT_NE(shell, nullptr) << "Shell is null.";
   }

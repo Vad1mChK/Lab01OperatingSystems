@@ -18,4 +18,4 @@ public:
   static void printHelp();
 };
 
-#endif // RAM_MEMORY_SORTER_HPP
+#endif  // RAM_MEMORY_SORTER_HPP

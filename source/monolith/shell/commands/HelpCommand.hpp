@@ -12,9 +12,10 @@
 
 class HelpCommand : public Command {
 public:
-  explicit HelpCommand(const std::vector<std::string>& args) : Command(args) {}
+  explicit HelpCommand(const std::vector<std::string>& args) : Command(args) {
+  }
 
   int Run() override;
 };
 
-#endif // HELP_COMMAND_HPP
+#endif  // HELP_COMMAND_HPP

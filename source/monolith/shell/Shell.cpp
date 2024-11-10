@@ -12,24 +12,25 @@
 #include "util/path_functions.hpp"
 #include "util/unistd_check.hpp"
 
-Shell::Shell() :
-    input_(std::cin), output_(std::cout), running_(true), working_directory_("") {}
+Shell::Shell() : input_(std::cin), output_(std::cout), running_(true), working_directory_("") {
+}
 
-Shell::Shell(std::istream& input, std::ostream& output) :
-    input_(input), output_(output), running_(true), working_directory_("") {}
+Shell::Shell(std::istream& input, std::ostream& output)
+    : input_(input), output_(output), running_(true), working_directory_("") {
+}
 
 void Shell::PrintPlatform() {
   output_ << "Running on platform: " <<
-    #ifdef UNISTD_AVAILABLE
+#ifdef UNISTD_AVAILABLE
       "Unix"
-    #else
-      #ifdef _WIN32
-        "Windows"
-      #else
-        "unknown"
-      #endif
-    #endif
-    << '\n';
+#else
+#ifdef _WIN32
+      "Windows"
+#else
+      "unknown"
+#endif
+#endif
+          << '\n';
 }
 
 void Shell::Start() {

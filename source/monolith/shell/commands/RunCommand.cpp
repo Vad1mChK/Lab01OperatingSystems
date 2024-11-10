@@ -1,7 +1,9 @@
-#include <iostream>
 #include "RunCommand.hpp"
-#include "../util/run_functions.hpp"
+
+#include <iostream>
 #include <string>
+
+#include "../util/run_functions.hpp"
 
 int RunCommand::Run() {
   if (args_.empty()) {
