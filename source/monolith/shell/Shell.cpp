@@ -10,12 +10,29 @@
 #include "Command.hpp"
 #include "CommandFactory.hpp"
 #include "util/path_functions.hpp"
+#include "util/unistd_check.h"
 
 Shell::Shell() : running_(true), working_directory_("") {
 }
 
+static void print_platform() {
+  std::cout << "Running on platform: " <<
+    #ifdef UNISTD_AVAILABLE
+      "Unix"
+    #else
+      #ifdef _WIN32
+        "Windows"
+      #else
+        "unknown. Most functionality will be unavailable."
+      #endif
+    #endif
+    << '\n';
+}
+
 void Shell::Start() {
   std::cout << "Starting up shell." << '\n';
+  print_platform();
+
   auto [pwd_string, pwd_status_code] = Pwd();
   if (pwd_status_code != 0) {
     std::cout << "Failed to initialize working directory." << '\n';
