@@ -8,7 +8,7 @@
 #include <random>
 #include <vector>
 
-#include "loaders/util/sorter_utils.hpp"
+#include "../util/sorter_utils.hpp"
 
 // Generate a random binary file of uint32_t values
 void RamMemorySorter::generateRandomFile(const std::string& filename, size_t size_mb) {

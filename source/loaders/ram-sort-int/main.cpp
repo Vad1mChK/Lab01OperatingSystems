@@ -5,7 +5,7 @@
 #include <string>
 
 #include "RamMemorySorter.hpp"
-#include "loaders/util/ema_ram_sorter_cli_constants.hpp"
+#include "../util/ema_ram_sorter_cli_constants.hpp"
 
 int main(int argc, char* argv[]) {
   if (argc < ArgcMin) {
