@@ -19,7 +19,13 @@ Checks: '-*,
   -cppcoreguidelines-avoid-c-arrays,
   -hicpp-avoid-c-arrays,
   -modernize-avoid-c-arrays,
-  -cppcoreguidelines-pro-type-reinterpret-cast
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -misc-non-private-member-variables-in-classes,
+  -cppcoreguidelines-pro-type-const-cast,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -hicpp-no-array-decay,
+  -concurrency-mt-unsafe,
+  
 '
 #HeaderFileExtensions:
 #  - hpp

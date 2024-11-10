@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     std::string output_file = argv[3];
     size_t repeat_count = std::stoull(argv[4]);
     for (size_t i = 0; i < repeat_count; ++i) {
-      RamMemorySorter::generateRandomFile(input_file, 256);
+      RamMemorySorter::generateRandomFile(input_file, FullBenchmarkFileSizeMb);
       RamMemorySorter::sortInMemory(input_file, output_file);
       RamMemorySorter::checkFileSorted(output_file);
     }

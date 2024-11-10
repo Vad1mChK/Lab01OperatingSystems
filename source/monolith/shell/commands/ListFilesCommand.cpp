@@ -7,7 +7,7 @@
 // Created by vadim on 12.10.2024.
 //
 
-void PrintList(std::vector<std::string> strings);
+void PrintList(const std::vector<std::string>& strings);
 
 int ListFilesCommand::Run() {
   if (this->shell_ == nullptr) {
@@ -49,7 +49,7 @@ int ListFilesCommand::Run() {
   }
 }
 
-void PrintList(std::vector<std::string> strings) {
+void PrintList(const std::vector<std::string>& strings) {
   for (const auto & str : strings) {
     std::cout << "- " << str << '\n';
   }
