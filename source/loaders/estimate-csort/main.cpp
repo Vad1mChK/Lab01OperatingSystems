@@ -19,7 +19,7 @@ int main() {
   auto end = std::chrono::high_resolution_clock::now();
 
   std::chrono::duration<double> elapsed = end - start;
-  std::cout << "Time taken to sort " << N << " elements: " << elapsed.count() << " seconds\n";
+  std::cout << "Time taken to sort " << data_size << " elements: " << elapsed.count() << " seconds\n";
 
   return 0;
 }
