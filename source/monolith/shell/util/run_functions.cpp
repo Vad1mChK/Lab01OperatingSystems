@@ -12,6 +12,7 @@
 #if UNISTD_AVAILABLE
 // Unix (Linux, macOS, ...): clone3
 #include <linux/sched.h>
+#include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -22,7 +23,16 @@
 
 static std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv);
 
+static bool FileExistsInCurrentDir(const std::string& filename) {
+  struct stat buffer;
+  return (stat(filename.c_str(), &buffer) == 0);
+}
+
 int RunProgram(std::vector<std::string>& args) {
+  if (!args[0].starts_with("./") && FileExistsInCurrentDir(args[0])) {
+    args[0] = "./" + args[0];  // Prepend ./ if the file exists in the current directory
+  }
+
   std::vector<const char*> argv;
   argv.reserve(args.size());
   for (const auto& arg : args) {
@@ -47,10 +57,16 @@ int RunProgram(std::vector<std::string>& args) {
 }
 
 std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
-  // Use clone3 for process creation
   struct clone_args cl_args = {};
-  cl_args.flags = 0;  // No special flags
-  cl_args.pidfd = 0;  // No PID file descriptor
+  cl_args.flags = 0; // No special flags
+  cl_args.exit_signal = SIGCHLD;
+
+  int pipefd[2];
+  if (pipe(pipefd) == -1) {
+    perror("pipe failed");
+    return {false, 2};
+  }
+
   pid_t pid = syscall(SYS_clone3, &cl_args, sizeof(cl_args));
   if (pid < 0) {
     perror("clone3 failed");
@@ -58,22 +74,43 @@ std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
   }
 
   if (pid == 0) {
-    // Child process: Execute the binary
+    // Child process
+    close(pipefd[0]); // Close read end of the pipe
     execvp(argv[0], const_cast<char* const*>(argv.data()));
-    perror("execvp failed");
-    _exit(1);  // Exit if execvp fails
+
+    // If execvp fails, write an error to the pipe
+    int exec_error = errno;
+    write(pipefd[1], &exec_error, sizeof(exec_error));
+    close(pipefd[1]);
+    _exit(1);
   }
 
-  int status = -1;
-  waitpid(pid, &status, 0);
+  // Parent process
+  close(pipefd[1]); // Close write end of the pipe
 
-  if (!WIFEXITED(status)) {
-    std::cout << "Process terminated abnormally.\n";
+  // Check if the child reported an exec error
+  int exec_error = 0;
+  read(pipefd[0], &exec_error, sizeof(exec_error));
+  close(pipefd[0]);
+
+  if (exec_error != 0) {
+    std::cout << "execvp failed: " << strerror(exec_error) << '\n';
+    waitpid(pid, nullptr, 0); // Clean up child process
     return {false, 3};
   }
 
-  return {true, WEXITSTATUS(status)};
+  // Wait for the child process to complete
+  int status = -1;
+  waitpid(pid, &status, 0);
+
+  if (WIFEXITED(status)) {
+    return {true, WEXITSTATUS(status)};
+  } else {
+    std::cout << "Process terminated abnormally.\n";
+    return {false, 4};
+  }
 }
+
 
 #else
 #ifdef _WIN32
