@@ -50,7 +50,7 @@ int ListFilesCommand::Run() {
 }
 
 void PrintList(std::vector<std::string> strings) {
-  for (auto str : strings) {
+  for (const auto & str : strings) {
     std::cout << "- " << str << '\n';
   }
 }

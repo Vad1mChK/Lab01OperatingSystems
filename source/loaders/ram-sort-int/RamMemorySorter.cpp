@@ -1,11 +1,9 @@
 #include "RamMemorySorter.hpp"
 
-#include <algorithm>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <limits>
-#include <random>
 #include <vector>
 
 #include "../util/sorter_utils.hpp"

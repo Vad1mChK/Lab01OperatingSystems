@@ -7,7 +7,6 @@
 #include <iostream>
 #include <limits>
 #include <queue>
-#include <random>
 #include <sstream>
 #include <vector>
 
@@ -74,7 +73,9 @@ void ExternalMemorySorter::sortByChunksAndSave(
       return;
     }
 
-    temp_file.write(reinterpret_cast<const char*>(buffer.data()), elements_read * sizeof(uint32_t));
+    temp_file.write(reinterpret_cast<const char*>(
+                        buffer.data()), static_cast<std::streamsize>(elements_read * sizeof(uint32_t))
+                    );
     temp_file.close();
 
     std::cout << "Chunk " << i + 1 << " sorted and saved to " << temp_filename << '\n';
