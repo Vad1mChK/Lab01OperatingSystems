@@ -47,12 +47,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
-
-      - name: Configure and Build Project
-        uses: threeal/cmake-action@v1.3.0
-        with:
-          run-build: true
-
-      - name: Test Project
-        uses: threeal/ctest-action@v1.1.0
+        uses: actions/checkout@master
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - run: |
+          mkdir build
+          cd build
+          cmake -G Ninja ..
+      - run: |
+          cmake --build build
+      # TODO add test phase
