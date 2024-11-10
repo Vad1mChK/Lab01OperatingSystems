@@ -10,42 +10,45 @@
 #include "Command.hpp"
 #include "CommandFactory.hpp"
 #include "util/path_functions.hpp"
-#include "util/unistd_check.h"
+#include "util/unistd_check.hpp"
 
-Shell::Shell() : running_(true), working_directory_("") {
-}
+Shell::Shell() :
+    input_(std::cin), output_(std::cout), running_(true), working_directory_("") {}
 
-static void print_platform() {
-  std::cout << "Running on platform: " <<
+Shell::Shell(std::istream& input, std::ostream& output) :
+    input_(input), output_(output), running_(true), working_directory_("") {}
+
+void Shell::PrintPlatform() {
+  output_ << "Running on platform: " <<
     #ifdef UNISTD_AVAILABLE
       "Unix"
     #else
       #ifdef _WIN32
         "Windows"
       #else
-        "unknown. Most functionality will be unavailable."
+        "unknown"
       #endif
     #endif
     << '\n';
 }
 
 void Shell::Start() {
-  std::cout << "Starting up shell." << '\n';
-  print_platform();
+  output_ << "Starting up shell." << '\n';
+  PrintPlatform();
 
   auto [pwd_string, pwd_status_code] = Pwd();
   if (pwd_status_code != 0) {
-    std::cout << "Failed to initialize working directory." << '\n';
+    output_ << "Failed to initialize working directory." << '\n';
     return;
   }
-  std::cout << "Current working directory is: " << pwd_string << '\n';
+  output_ << "Current working directory is: " << pwd_string << '\n';
   working_directory_ = pwd_string;
   this->Run();
 }
 
 void Shell::Run() {
   while (this->running_) {
-    std::cout << "[" + working_directory_ + "]>";
+    output_ << "[" + working_directory_ + "]>";
     std::string command_string = ReadNextCommandString();
     if (IsBlank(command_string)) {
       continue;
@@ -61,7 +64,7 @@ void Shell::Run() {
       command->BindToShell(this);
       command->Run();
     } else {
-      std::cout << "Unknown command: `" << command_string << '`' << '\n';
+      output_ << "Unknown command: `" << command_string << '`' << '\n';
     }
 
     this->history_.push(command_string);
@@ -69,9 +72,9 @@ void Shell::Run() {
 }
 
 std::string Shell::ReadNextCommandString() {
-  std::cout << "";
+  output_ << "";
   std::string command_string;
-  std::getline(std::cin, command_string);
+  std::getline(input_, command_string);
   return command_string;
 }
 
