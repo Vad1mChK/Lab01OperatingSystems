@@ -39,7 +39,7 @@ jobs:
 
       - name: Run clang-tidy on ./source
         run: |
-          clang-tidy $(find ./source -name '*.cpp') -p build -- -std=c++20
+          clang-tidy $(find ./source -name '*.cpp') -p build -- -std=c++20 --header-filter=./source/.* --system-headers=no
           if [ $? -ne 0 ]; then
             echo "clang-tidy found issues"
             exit 1
