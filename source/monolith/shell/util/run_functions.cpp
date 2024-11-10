@@ -64,7 +64,7 @@ static std::pair<bool, int> _runProgram(std::vector<const char*> argv) {
     _exit(1);  // Exit if execvp fails
   }
 
-  int status;
+  int status = -1;
   waitpid(pid, &status, 0);
 
   if (!WIFEXITED(status)) {

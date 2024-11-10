@@ -12,7 +12,7 @@
 
 #include <cstring>
 
-static std::pair<std::vector<std::string>, int> listFiles(const std::string& path);
+static std::pair<std::vector<std::string>, int> ListFiles(const std::string& path);
 
 std::pair<std::string, int> Pwd() {
   char buffer[PATH_MAX];
@@ -45,14 +45,14 @@ std::pair<std::vector<std::string>, int> Ls() {
   }
 
   // List files in the current directory
-  return listFiles(current_directory);
+  return ListFiles(current_directory);
 }
 
 std::pair<std::vector<std::string>, int> Ls(const std::string& path) {
-  return listFiles(path);
+  return ListFiles(path);
 }
 
-static std::pair<std::vector<std::string>, int> listFiles(const std::string& path) {
+static std::pair<std::vector<std::string>, int> ListFiles(const std::string& path) {
   std::vector<std::string> files;
   DIR* dir = opendir(path.c_str());  // Open the directory
   if (dir == nullptr) {
@@ -82,7 +82,7 @@ static std::pair<std::vector<std::string>, int> listFiles(const std::string& pat
 // Created by vadim on 12.10.2024.
 //
 
-static std::pair<std::vector<std::string>, int> listFiles(const std::string& path);
+static std::pair<std::vector<std::string>, int> ListFiles(const std::string& path);
 
 std::pair<std::string, int> Pwd() {
   // Get the required buffer size for the current directory
@@ -135,14 +135,14 @@ std::pair<std::vector<std::string>, int> Ls() {
   }
 
   // List files in the current directory
-  return listFiles(std::string(buffer.data()));
+  return ListFiles(std::string(buffer.data()));
 }
 
 std::pair<std::vector<std::string>, int> Ls(const std::string& path) {
-  return listFiles(path);
+  return ListFiles(path);
 }
 
-static std::pair<std::vector<std::string>, int> listFiles(const std::string& path) {
+static std::pair<std::vector<std::string>, int> ListFiles(const std::string& path) {
   std::vector<std::string> files;
   WIN32_FIND_DATA find_file_data;
   HANDLE hFind;
