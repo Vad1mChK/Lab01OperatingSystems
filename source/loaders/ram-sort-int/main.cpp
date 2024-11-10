@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
   if (command == "generate") {
     if (argc != 4) {
-      std::cout << "Usage: prog generate <output_file> <size_mb>" << std::endl;
+      std::cout << "Usage: prog generate <output_file> <size_mb>" << '\n';
       return 1;
     }
     std::string output_file = argv[2];
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
   }
   else if (command == "sort") {
     if (argc != 4) {
-      std::cout << "Usage: prog sort <input_file> <output_file>" << std::endl;
+      std::cout << "Usage: prog sort <input_file> <output_file>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
   }
   else if (command == "check") {
     if (argc != 3) {
-      std::cout << "Usage: prog check <input_file>" << std::endl;
+      std::cout << "Usage: prog check <input_file>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
   else if (command == "full-benchmark") {
     if (argc != 5) {
       std::cout << "Usage: prog full-benchmark <input_file> <output-file> <repeat-count>"
-        << std::endl;
+        << '\n';
       return 1;
     }
     std::string input_file = argv[2];
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
     RamMemorySorter::printHelp();
   }
   else {
-    std::cout << "Unknown command: " << command << std::endl;
+    std::cout << "Unknown command: " << command << '\n';
     RamMemorySorter::printHelp();
     return 1;
   }

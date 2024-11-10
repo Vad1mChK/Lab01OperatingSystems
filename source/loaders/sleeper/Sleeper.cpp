@@ -13,7 +13,7 @@ void sleeper(uint32_t milliseconds) {
 int main(int argc, char* argv[]) {
   if (argc != 2) {
     std::cout << "Wrong arguments count (1 expected). ";
-    std::cout << "Usage: " << argv[0] << " <milliseconds>" << std::endl;
+    std::cout << "Usage: " << argv[0] << " <milliseconds>" << '\n';
     return 1;
   }
 
@@ -22,22 +22,22 @@ int main(int argc, char* argv[]) {
     duration = std::stoi(argv[1]);
     if (duration < 0) {
       std::cout << "Cannot sleep for a negative duration (time travels are not invented yet!)"
-        << std::endl;
+        << '\n';
       return 2;
     }
   } catch (const std::invalid_argument& e) {
-    std::cout << "The argument could not be converted to a number." << std::endl;
+    std::cout << "The argument could not be converted to a number." << '\n';
     return 3;
   } catch (const std::out_of_range& e) {
-    std::cout << "The argument could not be converted to a number." << std::endl;
+    std::cout << "The argument could not be converted to a number." << '\n';
     return 3;
   } catch (const std::exception& e) {
-    std::cout << "An unknown exception has occurred while running." << std::endl;
+    std::cout << "An unknown exception has occurred while running." << '\n';
     return 4;
   }
 
-  std::cout << "Sleeping for " << duration << "ms... " << std::endl;
+  std::cout << "Sleeping for " << duration << "ms... " << '\n';
   sleeper(duration);
-  std::cout << "Waking up." << std::endl;
+  std::cout << "Waking up." << '\n';
   return 0;
 }

@@ -21,7 +21,7 @@ int HelpCommand::Run() {
         for (auto it = CommandNameToDescription.begin();
           it != CommandNameToDescription.end();
           ++it) {
-            std::cout << "- " << it->first << ": " << it->second << std::endl;
+            std::cout << "- " << it->first << ": " << it->second << '\n';
           }
         return 0;
       }
@@ -29,19 +29,19 @@ int HelpCommand::Run() {
         auto command_name = this->args_[0];
         if (CommandNameToDescription.contains(command_name)) {
           std::cout << "- " << command_name << ": " << CommandNameToDescription.at(command_name)
-            << std::endl;
+            << '\n';
           return 0;
         }
-        std::cout << "No command name was found: " << command_name << std::endl;
+        std::cout << "No command name was found: " << command_name << '\n';
         return 1;
       }
       default: {
-        std::cout << "Too many arguments for `help` command (<= 1 expected)" << std::endl;
+        std::cout << "Too many arguments for `help` command (<= 1 expected)" << '\n';
         return 2;
       }
     }
   } catch (const std::exception& e) {
-    std::cout << "An error has occurred when running the command: " << e.what() << std::endl;
+    std::cout << "An error has occurred when running the command: " << e.what() << '\n';
     return -2;
   }
 }

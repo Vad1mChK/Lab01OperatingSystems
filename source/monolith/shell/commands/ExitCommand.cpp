@@ -6,10 +6,10 @@
 //
 int ExitCommand::Run() {
   if (this->shell_ == nullptr) {
-    std::cout << "This command requires a shell to run." << std::endl;
+    std::cout << "This command requires a shell to run." << '\n';
     return -1;
   }
-  std::cout << "Exiting shell..." << std::endl;
+  std::cout << "Exiting shell..." << '\n';
   shell_->Stop();
   return 0;
 }

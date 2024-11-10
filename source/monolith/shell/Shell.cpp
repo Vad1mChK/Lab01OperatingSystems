@@ -15,13 +15,13 @@ Shell::Shell() : running_(true), working_directory_("") {
 }
 
 void Shell::Start() {
-  std::cout << "Starting up shell." << std::endl;
+  std::cout << "Starting up shell." << '\n';
   auto [pwd_string, pwd_status_code] = pwd();
   if (pwd_status_code != 0) {
-    std::cout << "Failed to initialize working directory." << std::endl;
+    std::cout << "Failed to initialize working directory." << '\n';
     return;
   }
-  std::cout << "Current working directory is: " << pwd_string << std::endl;
+  std::cout << "Current working directory is: " << pwd_string << '\n';
   working_directory_ = pwd_string;
   this->Run();
 }
@@ -44,7 +44,7 @@ void Shell::Run() {
       command->BindToShell(this);
       command->Run();
     } else {
-      std::cout << "Unknown command: `" << command_string << '`' << std::endl;
+      std::cout << "Unknown command: `" << command_string << '`' << '\n';
     }
 
     this->history_.push(command_string);

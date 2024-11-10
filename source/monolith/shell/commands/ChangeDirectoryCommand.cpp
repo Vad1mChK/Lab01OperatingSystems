@@ -8,19 +8,19 @@
 
 int ChangeDirectoryCommand::Run() {
   if (this->shell_ == nullptr) {
-    std::cout << "This command requires a shell to run." << std::endl;
+    std::cout << "This command requires a shell to run." << '\n';
     return -1;
   }
 
   if (this->args_.size() != 1) {
-    std::cout << "Error: Wrong arguments count for command `cd` (1 expected)" << std::endl;
+    std::cout << "Error: Wrong arguments count for command `cd` (1 expected)" << '\n';
     return 3;
   }
 
   auto [pwd_string, pwd_status_code] = cd(this->args_[0]);
 
   if (pwd_status_code) {
-    std::cout << "Error: " << pwd_string << std::endl;
+    std::cout << "Error: " << pwd_string << '\n';
     return pwd_status_code;
   }
 

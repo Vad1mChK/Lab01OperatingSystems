@@ -18,7 +18,7 @@ LONGLONG GetCurrentTimeInMicroseconds() {
 
 int RunCommand::Run() {
     if (args_.empty()) {
-        std::cout << "No binary specified to run." << std::endl;
+        std::cout << "No binary specified to run." << '\n';
         return 1;
     }
 
@@ -57,7 +57,7 @@ int RunCommand::Run() {
             &pi)                       // Pointer to PROCESS_INFORMATION structure
     ) {
       const DWORD return_code = GetLastError();
-      std::cout << "CreateProcess failed with error code " << return_code << std::endl;
+      std::cout << "CreateProcess failed with error code " << return_code << '\n';
       return 2;
     }
 
@@ -69,7 +69,7 @@ int RunCommand::Run() {
     LONGLONG exec_time = end_time - start_time;
 
     // Output the execution time in milliseconds
-    std::cout << "Execution time: " << (exec_time / 1000.0) << " ms" << std::endl;
+    std::cout << "Execution time: " << (exec_time / 1000.0) << " ms" << '\n';
 
     // Close process and thread handles
     CloseHandle(pi.hProcess);
@@ -80,7 +80,7 @@ int RunCommand::Run() {
 #else
 
 int RunCommand::Run() {
-  std::cout << "This code is not running on Windows." << std::endl;
+  std::cout << "This code is not running on Windows." << '\n';
   return 1;
 }
 

@@ -22,7 +22,7 @@ uint32_t ExternalMemorySorter::randomUint32() {
 void ExternalMemorySorter::generateRandomFile(const std::string& filename, size_t size_in_mb) {
     std::ofstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Failed to open file for writing: " << filename << std::endl;
+        std::cerr << "Failed to open file for writing: " << filename << '\n';
         return;
     }
 
@@ -33,7 +33,7 @@ void ExternalMemorySorter::generateRandomFile(const std::string& filename, size_
         file.write(reinterpret_cast<const char*>(&number), sizeof(number));
     }
 
-    std::cout << "Random file generated: " << filename << " (" << size_in_mb << " MB)" << std::endl;
+    std::cout << "Random file generated: " << filename << " (" << size_in_mb << " MB)" << '\n';
 }
 
 // Sort chunks of the input file and save them as temporary files
@@ -44,7 +44,7 @@ void ExternalMemorySorter::sortByChunksAndSave(
 ) {
     std::ifstream input(input_filename, std::ios::binary);
     if (!input) {
-        std::cerr << "Failed to open input file: " << input_filename << std::endl;
+        std::cerr << "Failed to open input file: " << input_filename << '\n';
         return;
     }
 
@@ -58,7 +58,7 @@ void ExternalMemorySorter::sortByChunksAndSave(
     size_t num_elements = file_size_in_bytes / sizeof(uint32_t);
     size_t num_chunks = (num_elements + chunk_size_in_elements - 1) / chunk_size_in_elements;
 
-    std::cout << "Sorting " << num_chunks << " chunks..." << std::endl;
+    std::cout << "Sorting " << num_chunks << " chunks..." << '\n';
 
     for (size_t i = 0; i < num_chunks; ++i) {
         size_t elements_to_read = std::min(chunk_size_in_elements, num_elements - i * chunk_size_in_elements);
@@ -74,14 +74,14 @@ void ExternalMemorySorter::sortByChunksAndSave(
 
         std::ofstream temp_file(temp_filename, std::ios::binary);
         if (!temp_file) {
-            std::cerr << "Failed to open temp file: " << temp_filename << std::endl;
+            std::cerr << "Failed to open temp file: " << temp_filename << '\n';
             return;
         }
 
         temp_file.write(reinterpret_cast<const char*>(buffer.data()), elements_read * sizeof(uint32_t));
         temp_file.close();
 
-        std::cout << "Chunk " << i + 1 << " sorted and saved to " << temp_filename << std::endl;
+        std::cout << "Chunk " << i + 1 << " sorted and saved to " << temp_filename << '\n';
     }
 
     input.close();
@@ -113,7 +113,7 @@ void ExternalMemorySorter::mergeChunksAndSave(
 
         temp_files[i].open(temp_filename, std::ios::binary);
         if (!temp_files[i]) {
-            std::cerr << "Failed to open temp file for merging: " << temp_filename << std::endl;
+            std::cerr << "Failed to open temp file for merging: " << temp_filename << '\n';
             return;
         }
 
@@ -124,7 +124,7 @@ void ExternalMemorySorter::mergeChunksAndSave(
 
     std::ofstream output(output_filename, std::ios::binary);
     if (!output) {
-        std::cerr << "Failed to open output file for writing: " << output_filename << std::endl;
+        std::cerr << "Failed to open output file for writing: " << output_filename << '\n';
         return;
     }
 
@@ -177,7 +177,7 @@ void ExternalMemorySorter::externalMemorySort(
     // Step 2: Calculate the number of chunks
     std::ifstream input(input_filename, std::ios::binary | std::ios::ate);
     if (!input) {
-        std::cerr << "Failed to open input file for size calculation: " << input_filename << std::endl;
+        std::cerr << "Failed to open input file for size calculation: " << input_filename << '\n';
         return;
     }
 
@@ -190,14 +190,14 @@ void ExternalMemorySorter::externalMemorySort(
     // Step 3: Merge the sorted chunks into the final output file
     mergeChunksAndSave(temp_directory, output_filename, num_chunks);
 
-    std::cout << "External memory sort completed. Output file: " << output_filename << std::endl;
+    std::cout << "External memory sort completed. Output file: " << output_filename << '\n';
 }
 
 // Check if the file is sorted
 void ExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
     std::ifstream input(input_filename, std::ios::binary);
     if (!input) {
-        std::cerr << "Failed to open file for checking: " << input_filename << std::endl;
+        std::cerr << "Failed to open file for checking: " << input_filename << '\n';
         return;
     }
 
@@ -213,7 +213,7 @@ void ExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
         if (!first) {
             if (current_value < prev_value) {
                 std::cout << "File is not sorted. Error at value "
-                  << std::hex << current_value << " after " << prev_value << std::endl;
+                  << std::hex << current_value << " after " << prev_value << '\n';
                 is_sorted = false;
                 break;
             }
@@ -224,9 +224,9 @@ void ExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
     }
 
     if (is_sorted) {
-        std::cout << "File is sorted." << std::endl;
+        std::cout << "File is sorted." << '\n';
     } else {
-        std::cout << "File is not sorted." << std::endl;
+        std::cout << "File is not sorted." << '\n';
     }
 
     input.close();

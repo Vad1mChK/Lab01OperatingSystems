@@ -81,7 +81,7 @@ static std::pair<std::vector<std::string>, int> listFiles(const std::string& pat
   hFind = FindFirstFile(search_path.c_str(), &find_file_data);
   if (hFind == INVALID_HANDLE_VALUE) {
     // If the handle is invalid, return an error
-    std::cout << "Handle is invalid." << std::endl;
+    std::cout << "Handle is invalid." << '\n';
     return { {}, 1 };
   }
 

@@ -16,7 +16,7 @@ int PathToWorkingDirectoryCommand::Run() {
     std::cout << "Error: ";
   }
 
-  std::cout << pwd_string << std::endl;
+  std::cout << pwd_string << '\n';
 
   return pwd_status_code;
 }

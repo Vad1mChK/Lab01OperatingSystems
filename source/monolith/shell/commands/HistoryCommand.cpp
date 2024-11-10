@@ -9,7 +9,7 @@ static int PrintHistory(std::stack<std::string>& history_stack, size_t history_s
 
 int HistoryCommand::Run() {
   if (this->shell_ == nullptr) {
-    std::cout << "This command requires a shell to run." << std::endl;
+    std::cout << "This command requires a shell to run." << '\n';
     return -1;
   }
 
@@ -24,19 +24,19 @@ int HistoryCommand::Run() {
       case 1: {
         int history_size_parsed = std::stoi(this->args_[0]);
         if (history_size_parsed < 0) {
-          std::cout << "Cannot print a negative number of history entries." << std::endl;
+          std::cout << "Cannot print a negative number of history entries." << '\n';
           return 1;
         }
         history_size = static_cast<size_t>(history_size_parsed);
         return PrintHistory(history, history_size);
       }
       default: {
-        std::cout << "Too many arguments for `history` command (<= 1 expected)" << std::endl;
+        std::cout << "Too many arguments for `history` command (<= 1 expected)" << '\n';
         return 2;
       }
     }
   } catch (const std::exception& e) {
-    std::cout << "An error has occurred when running the command: " << e.what() << std::endl;
+    std::cout << "An error has occurred when running the command: " << e.what() << '\n';
     return -2;
   }
 }
@@ -45,7 +45,7 @@ static int PrintHistory(std::stack<std::string>& history_stack, size_t history_s
   history_size = std::min(history_size, history_stack.size());
 
   if (history_size == 0) {
-    std::cout << "History is empty." << std::endl;
+    std::cout << "History is empty." << '\n';
     return 0;
   }
 
@@ -54,7 +54,7 @@ static int PrintHistory(std::stack<std::string>& history_stack, size_t history_s
 
   for (size_t i = 0; i < history_size; ++i) {
     auto elem = temp_history_stack.top();
-    std::cout << "- " << elem << std::endl;
+    std::cout << "- " << elem << '\n';
     temp_history_stack.pop();
   }
 
