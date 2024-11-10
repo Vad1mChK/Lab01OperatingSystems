@@ -42,7 +42,7 @@ jobs:
           clang-tidy $(find ./source -name '*.cpp' -o -name '*.hpp') -p build -- -std=c++17 || echo "clang-tidy finished with warnings/errors"
 
   test:
-    needs: format-and-lint
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
