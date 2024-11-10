@@ -36,7 +36,7 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         loaders/ram-sort-int/RamMemorySorter.cpp
         loaders/ram-sort-int/main.cpp
         loaders/estimate-csort/main.cpp
-        monolith/shell/util/unistd_check.h
+        monolith/shell/util/unistd_check.hpp
         monolith/shell/util/run_functions.cpp
 )
 
