@@ -12,14 +12,15 @@
 
 #include <cstring>
 
-static std::pair<std::vector<std::string>, int> ListFiles(const std::string& path);
+std::pair<std::vector<std::string>, int> ListFiles(const std::string& path);
 
 std::pair<std::string, int> Pwd() {
   char buffer[PATH_MAX];
-  if (getcwd(buffer, sizeof buffer) == nullptr) {
+  char* buffer_ptr = static_cast<char*>(buffer);
+  if (getcwd(buffer_ptr, sizeof buffer) == nullptr) {
     return {"Failed to get the current working directory.", 1};
   }
-  return {std::string(buffer), 0};
+  return {std::string(buffer_ptr), 0};
 }
 
 // `Cd` function: Changes the current directory
@@ -52,7 +53,7 @@ std::pair<std::vector<std::string>, int> Ls(const std::string& path) {
   return ListFiles(path);
 }
 
-static std::pair<std::vector<std::string>, int> ListFiles(const std::string& path) {
+std::pair<std::vector<std::string>, int> ListFiles(const std::string& path) {
   std::vector<std::string> files;
   DIR* dir = opendir(path.c_str());  // Open the directory
   if (dir == nullptr) {
@@ -61,7 +62,7 @@ static std::pair<std::vector<std::string>, int> ListFiles(const std::string& pat
     return {{}, 1};
   }
 
-  struct dirent* entry;
+  struct dirent* entry = nullptr;
   while ((entry = readdir(dir)) != nullptr) {
     // Skip the special entries "." and ".."
     if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {

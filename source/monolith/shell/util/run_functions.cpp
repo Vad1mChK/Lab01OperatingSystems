@@ -21,10 +21,10 @@
 #include <chrono>
 #include <cstring>
 
-static std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv);
+std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv);
 
-static bool FileExistsInCurrentDir(const std::string& filename) {
-  struct stat buffer;
+bool FileExistsInCurrentDir(const std::string& filename) {
+  struct stat buffer{};
   return (stat(filename.c_str(), &buffer) == 0);
 }
 
@@ -62,12 +62,12 @@ std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
   cl_args.exit_signal = SIGCHLD;
 
   int pipefd[2];
-  if (pipe(pipefd) == -1) {
+  if (pipe(static_cast<int*>(pipefd)) == -1) {
     perror("pipe failed");
     return {false, 2};
   }
 
-  pid_t pid = syscall(SYS_clone3, &cl_args, sizeof(cl_args));
+  auto pid = static_cast<pid_t>(syscall(SYS_clone3, &cl_args, sizeof(cl_args)));
   if (pid < 0) {
     perror("clone3 failed");
     return {false, 2};
@@ -105,10 +105,10 @@ std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
 
   if (WIFEXITED(status)) {
     return {true, WEXITSTATUS(status)};
-  } else {
-    std::cout << "Process terminated abnormally.\n";
-    return {false, 4};
   }
+
+  std::cout << "Process terminated abnormally.\n";
+  return {false, 4};
 }
 
 

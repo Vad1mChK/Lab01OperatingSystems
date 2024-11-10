@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "monolith/shell/Shell.hpp"
+#include "../shell/Shell.hpp"
 
 namespace monolith::app {
 void Main() {

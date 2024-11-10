@@ -15,7 +15,12 @@ Checks: '-*,
   readability-*,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-vararg,
-  -hicpp-vararg'
+  -hicpp-vararg,
+  -cppcoreguidelines-avoid-c-arrays,
+  -hicpp-avoid-c-arrays,
+  -modernize-avoid-c-arrays,
+  -
+'
 #HeaderFileExtensions:
 #  - hpp
 #ImplementationFileExtensions:
