@@ -15,7 +15,8 @@
 using CommandFactoryFunction =
     std::function<std::unique_ptr<Command>(const std::vector<std::string>&)>;
 
-static const std::map<std::string, CommandFactoryFunction> command_map = {
+std::map<std::string, CommandFactoryFunction> CommandMap() {
+  return {
     {   "help",
      [](const std::vector<std::string>& args) { return std::make_unique<HelpCommand>(args); }          },
     {   "exit",
@@ -34,19 +35,21 @@ static const std::map<std::string, CommandFactoryFunction> command_map = {
      [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }     },
     {    "run", [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }}
     // Add more command mappings here...
-};
+  };
+}
 
 std::unique_ptr<Command> CommandFactory(
     const std::string& command_name, const std::vector<std::string>& args
 ) {
+  auto cmd_map = CommandMap();
   // Convert the command name to lowercase
   auto command_name_lowercase = StringToLower(command_name);
 
   // Try to find the command in the map
-  auto it = command_map.find(command_name_lowercase);
-  if (it != command_map.end()) {
+  auto entry = cmd_map.find(command_name_lowercase);
+  if (entry != cmd_map.end()) {
     // Call the factory function to create the command
-    return it->second(args);
+    return entry->second(args);
   }
 
   // Return nullptr if the command is unknown
@@ -77,15 +80,15 @@ std::vector<std::string> SplitString(const std::string& inp) {
 }
 
 bool IsBlank(const std::string& inp) {
-  return std::all_of(inp.cbegin(), inp.cend(), [](char ch) {
-    return std::isspace(static_cast<unsigned char>(ch)) != 0;
+  return std::all_of(inp.cbegin(), inp.cend(), [](char chr) {
+    return std::isspace(static_cast<unsigned char>(chr)) != 0;
   });
 }
 
 std::string StringToLower(const std::string& inp) {
   std::string res = inp;
-  std::transform(res.begin(), res.end(), res.begin(), [](char ch) {
-    return static_cast<char>(tolower(ch));
+  std::transform(res.begin(), res.end(), res.begin(), [](char chr) {
+    return static_cast<char>(tolower(chr));
   });
   return res;
 }
