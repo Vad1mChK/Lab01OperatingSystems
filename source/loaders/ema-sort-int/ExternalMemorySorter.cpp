@@ -151,7 +151,7 @@ void ExternalMemorySorter::mergeChunksAndSave(
       std::ostringstream temp_filename_stream;
       temp_filename_stream << temp_directory << "/chunk_" << idx << ".dat";
       std::string temp_filename = temp_filename_stream.str();
-      std::remove(temp_filename.c_str());
+      (void) std::remove(temp_filename.c_str());
     }
   }
 

@@ -1,5 +1,6 @@
 #include "RamMemorySorter.hpp"
 
+#include <algorithm>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
