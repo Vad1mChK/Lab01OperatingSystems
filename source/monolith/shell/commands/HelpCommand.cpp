@@ -20,9 +20,8 @@ int HelpCommand::Run() {
   try {
     switch (this->args_.size()) {
       case 0: {
-        for (auto it = CommandNameToDescription.begin(); it != CommandNameToDescription.end();
-             ++it) {
-          std::cout << "- " << it->first << ": " << it->second << '\n';
+        for (const auto & entry : CommandNameToDescription) {
+          std::cout << "- " << entry.first << ": " << entry.second << '\n';
         }
         return 0;
       }
