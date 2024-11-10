@@ -27,10 +27,10 @@ Checks: '-*,
   -concurrency-mt-unsafe,
   
 '
-#HeaderFileExtensions:
-#  - hpp
-#ImplementationFileExtensions:
-#  - cpp
+HeaderFileExtensions:
+  - hpp
+ImplementationFileExtensions:
+  - cpp
 HeaderFilterRegex: '^./source'
 FormatStyle: 'file'
 CheckOptions:
