@@ -3,8 +3,7 @@
 #include "monolith/shell/Shell.hpp"
 #include "monolith/shell/util/unistd_check.hpp"
 
-// Smoke Test Suite for the Shell
-class ShellSmokeTestSuite : public ::testing::Test {
+class ShellTestSuite : public ::testing::Test {
 protected:
   std::stringstream mock_input;
   std::stringstream mock_output;
@@ -24,40 +23,40 @@ protected:
   }
 };
 
-TEST_F(ShellSmokeTestSuite, ShellInitialization) {
+TEST_F(ShellTestSuite, ShellInitialization) {
   mock_input.str("exit\n");  // Simulate input to exit the shell
   EXPECT_NO_THROW(shell->Start());
   EXPECT_NE(mock_output.str().find("Starting up shell."), std::string::npos);
 }
 
-TEST_F(ShellSmokeTestSuite, CorrectlyDetectPlatform) {
+TEST_F(ShellTestSuite, CorrectlyDetectPlatform) {
   mock_input.str("exit\n");
   EXPECT_NO_THROW(shell->Start());
   std::string platformName = (
-    #ifdef UNISTD_AVAILABLE
+#ifdef UNISTD_AVAILABLE
       "Unix"
-    #elif defined(_WIN32)
+#elif defined(_WIN32)
       "Windows"
-    #else
+#else
       "unknown"
-    #endif
+#endif
   );
   EXPECT_NE(mock_output.str().find(platformName), std::string::npos);
 }
 
-TEST_F(ShellSmokeTestSuite, ExecuteBasicCommand) {
+TEST_F(ShellTestSuite, ExecuteBasicCommand) {
   mock_input.str("pwd\nexit\n");  // Simulate user input
   EXPECT_NO_THROW(shell->Start());
   EXPECT_NE(mock_output.str().find("Current working directory is:"), std::string::npos);
 }
 
-TEST_F(ShellSmokeTestSuite, ExecuteUnknownCommand) {
+TEST_F(ShellTestSuite, ExecuteUnknownCommand) {
   mock_input.str("unknown_command\nexit\n");
   EXPECT_NO_THROW(shell->Start());
   EXPECT_NE(mock_output.str().find("Unknown command: `unknown_command`"), std::string::npos);
 }
 
-TEST_F(ShellSmokeTestSuite, VerifyCommandHistory) {
+TEST_F(ShellTestSuite, VerifyCommandHistory) {
   mock_input.str("ls\npwd\nexit\n");
   EXPECT_NO_THROW(shell->Start());
   auto& history = shell->GetHistory();

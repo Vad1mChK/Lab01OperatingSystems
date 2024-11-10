@@ -11,7 +11,8 @@ set(MONOLITH_TEST_TARGET "${PROJECT_NAME}-test")
 file(GLOB_RECURSE MONOLITH_TEST_SOURCES CONFIGURE_DEPENDS *.hpp *.cpp)
 
 # Create the test executable
-add_executable(${MONOLITH_TEST_TARGET} ${MONOLITH_TEST_SOURCES})
+add_executable(${MONOLITH_TEST_TARGET} ${MONOLITH_TEST_SOURCES}
+        monolith/RamMemorySorterTestSuite.cpp)
 
 # Include directories for the test target
 target_include_directories(${MONOLITH_TEST_TARGET} PUBLIC ${MONOLITH_TEST_INCLUDE_PATH})
