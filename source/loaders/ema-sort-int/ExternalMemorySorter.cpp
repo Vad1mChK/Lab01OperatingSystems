@@ -56,7 +56,9 @@ void ExternalMemorySorter::sortByChunksAndSave(
   for (size_t i = 0; i < num_chunks; ++i) {
     size_t elements_to_read =
         std::min(chunk_size_in_elements, num_elements - i * chunk_size_in_elements);
-    input.read(reinterpret_cast<char*>(buffer.data()), elements_to_read * sizeof(uint32_t));
+    input.read(reinterpret_cast<char*>(
+                   buffer.data()), static_cast<std::streamsize>(elements_to_read * sizeof(uint32_t))
+               );
     size_t elements_read = input.gcount() / sizeof(uint32_t);
 
     buffer.resize(elements_read);  // Resize buffer to actual number of elements read
@@ -85,9 +87,11 @@ void ExternalMemorySorter::sortByChunksAndSave(
 void ExternalMemorySorter::mergeChunksAndSave(
     const std::string& temp_directory, const std::string& output_filename, size_t num_chunks
 ) {
-  struct HeapNode {
+  struct HeapNode final {
     uint32_t value;
     size_t chunk_index;
+
+    HeapNode(uint32_t val, size_t ch_idx): value(val), chunk_index(ch_idx) {}
 
     bool operator>(const HeapNode& other) const {
       return value > other.value;
@@ -126,7 +130,7 @@ void ExternalMemorySorter::mergeChunksAndSave(
 
   for (size_t i = 0; i < num_chunks; ++i) {
     if (has_more[i]) {
-      min_heap.push({current_values[i], i});
+      min_heap.emplace(current_values[i], i);
     }
   }
 
