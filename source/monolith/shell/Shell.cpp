@@ -9,8 +9,8 @@
 
 #include "Command.hpp"
 #include "CommandFactory.hpp"
+#include "../../common/unistd_check.hpp"
 #include "util/path_functions.hpp"
-#include "util/unistd_check.hpp"
 
 Shell::Shell() : input_(std::cin), output_(std::cout), running_(true) {
 }

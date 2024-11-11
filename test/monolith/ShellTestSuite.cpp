@@ -2,8 +2,8 @@
 
 #include <sstream>
 
+#include "common/unistd_check.hpp"
 #include "monolith/shell/Shell.hpp"
-#include "monolith/shell/util/unistd_check.hpp"
 
 class ShellTestSuite : public ::testing::Test {
 protected:

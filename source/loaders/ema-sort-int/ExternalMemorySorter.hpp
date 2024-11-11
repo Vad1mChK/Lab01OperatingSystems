@@ -11,7 +11,10 @@ private:
   );
 
   static void mergeChunksAndSave(
-      const std::string& temp_directory, const std::string& output_filename, size_t num_chunks
+      const std::string& temp_directory,
+      const std::string& input_filename, // To retrieve chunk file names
+      const std::string& output_filename,
+      size_t num_chunks
   );
 
 public:

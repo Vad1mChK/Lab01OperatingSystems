@@ -64,7 +64,8 @@ void ExternalMemorySorter::sortByChunksAndSave(
     std::sort(buffer.begin(), buffer.end());
 
     std::ostringstream temp_filename_stream;
-    temp_filename_stream << temp_directory << "/chunk_" << i << ".dat";
+    temp_filename_stream << temp_directory << "/"
+                         << SanitizeInputFilename(input_filename) << "_chunk_" << i << ".dat";
     std::string temp_filename = temp_filename_stream.str();
 
     std::ofstream temp_file(temp_filename, std::ios::binary);
@@ -86,7 +87,10 @@ void ExternalMemorySorter::sortByChunksAndSave(
 
 // Merge sorted chunks from temporary files into the output file
 void ExternalMemorySorter::mergeChunksAndSave(
-    const std::string& temp_directory, const std::string& output_filename, size_t num_chunks
+    const std::string& temp_directory,
+    const std::string& input_filename,
+    const std::string& output_filename,
+    size_t num_chunks
 ) {
   struct HeapNode final {
     uint32_t value;
@@ -105,7 +109,8 @@ void ExternalMemorySorter::mergeChunksAndSave(
 
   for (size_t i = 0; i < num_chunks; ++i) {
     std::ostringstream temp_filename_stream;
-    temp_filename_stream << temp_directory << "/chunk_" << i << ".dat";
+    temp_filename_stream << temp_directory << "/"
+                         << SanitizeInputFilename(input_filename) << "_chunk_" << i << ".dat";
     std::string temp_filename = temp_filename_stream.str();
 
     temp_files[i].open(temp_filename, std::ios::binary);
@@ -143,7 +148,7 @@ void ExternalMemorySorter::mergeChunksAndSave(
 
     size_t idx = node.chunk_index;
     if (temp_files[idx].read(reinterpret_cast<char*>(&current_values[idx]), sizeof(uint32_t))) {
-      min_heap.push({current_values[idx], idx});
+      min_heap.emplace(current_values[idx], idx);
     } else {
       has_more[idx] = false;
       temp_files[idx].close();
@@ -181,7 +186,7 @@ void ExternalMemorySorter::externalMemorySort(
   size_t num_chunks = (file_size_in_bytes + chunk_size_in_bytes - 1) / chunk_size_in_bytes;
 
   // Step 3: Merge the sorted chunks into the final output file
-  mergeChunksAndSave(temp_directory, output_filename, num_chunks);
+  mergeChunksAndSave(temp_directory, input_filename, output_filename, num_chunks);
 
   std::cout << "External memory sort completed. Output file: " << output_filename << '\n';
 }
