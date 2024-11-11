@@ -26,10 +26,6 @@ Checks: '-*,
   -hicpp-no-array-decay,
   -concurrency-mt-unsafe,
 '
-HeaderFileExtensions:
-  - hpp
-ImplementationFileExtensions:
-  - cpp
 HeaderFilterRegex: '^./source'
 FormatStyle: 'file'
 CheckOptions:

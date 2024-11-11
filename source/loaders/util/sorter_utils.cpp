@@ -1,6 +1,7 @@
 #include "sorter_utils.hpp"
 
 #include <random>
+#include <algorithm>
 
 uint32_t RandomUint32() {
   static std::random_device random_device;
