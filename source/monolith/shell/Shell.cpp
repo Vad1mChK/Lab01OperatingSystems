@@ -11,6 +11,7 @@
 #include "CommandFactory.hpp"
 #include "../../common/unistd_check.hpp"
 #include "util/path_functions.hpp"
+#include "util/string_functions.hpp"
 
 Shell::Shell() : input_(std::cin), output_(std::cout), running_(true) {
 }
@@ -49,7 +50,10 @@ void Shell::Start() {
 
 void Shell::Run() {
   while (this->running_) {
-    output_ << "[" + working_directory_ + "]>";
+    std::string prompt = "[" + ShortenEachPart(
+      working_directory_, '/', 1, false
+      ) + "]> ";
+    output_ << prompt;
     std::string command_string = ReadNextCommandString();
     if (IsBlank(command_string)) {
       continue;
