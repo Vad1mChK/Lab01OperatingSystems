@@ -23,6 +23,8 @@
 
 std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv);
 
+std::pair<bool, pid_t> RunNonBlockingProgramUtil(std::vector<const char*> argv);
+
 bool FileExistsInCurrentDir(const std::string& filename) {
   struct stat buffer{};
   return (stat(filename.c_str(), &buffer) == 0);
@@ -55,6 +57,21 @@ int RunProgram(std::vector<std::string>& args) {
             << duration_ms.count() << "ms" << '\n';
   return statusCode;
 }
+
+//int RunNonBlockingProgram(std::vector<std::string>& args) {
+//  if (!args[0].starts_with("./") && FileExistsInCurrentDir(args[0])) {
+//    args[0] = "./" + args[0];  // Prepend ./ if the file exists in the current directory
+//  }
+//
+//  std::vector<const char*> argv;
+//  argv.reserve(args.size());
+//  for (const auto& arg : args) {
+//    argv.push_back(arg.c_str());
+//  }
+//  argv.push_back(nullptr);
+//
+//
+//}
 
 std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
   struct clone_args cl_args = {};
@@ -111,6 +128,16 @@ std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
   return {false, 4};
 }
 
+pid_t RunNonBlockingProgram(std::vector<std::string>& args) {
+  (void) args;
+  // TODO idk really
+  return -1
+}
+
+std::pair<bool, pid_t> RunNonBlockingProgramUtil(const std::vector<const char*>& argv) {
+  (void) argv;
+  return { false, -1 };
+}
 
 #else
 #ifdef _WIN32
@@ -171,11 +198,19 @@ int RunProgram(const std::vector<std::string>& args) {
 
   return 0;
 }
+
+pid_t RunNonBlockingProgram(std::vector<std::string>& args) {
+  std::cout << "Cannot run on platforms other than Unix." << '\n';
+}
 #else
 // TempleOS or worse
 int RunProgram(std::vector<std::string>& args) {
   std::cout << "Cannot run on platforms other than Unix and Windows." << '\n';
   return 1;
+}
+
+pid_t RunNonBlockingProgram(std::vector<std::string>& args) {
+  std::cout << "Cannot run on platforms other than Unix." << '\n';
 }
 #endif
 #endif

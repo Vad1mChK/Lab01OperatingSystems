@@ -9,6 +9,7 @@
 #include <queue>
 #include <sstream>
 #include <vector>
+#include <chrono>
 
 #include "../util/sorter_utils.hpp"
 
@@ -20,6 +21,8 @@ void ExternalMemorySorter::generateRandomFile(const std::string& filename, size_
     return;
   }
 
+  auto t_start = std::chrono::steady_clock::now();
+
   size_t num_elements = size_mb * BytesInMb / sizeof(uint32_t);
 
   for (size_t i = 0; i < num_elements; ++i) {
@@ -27,6 +30,10 @@ void ExternalMemorySorter::generateRandomFile(const std::string& filename, size_
     file.write(reinterpret_cast<const char*>(&number), sizeof(number));
   }
 
+  auto t_end = std::chrono::steady_clock::now();
+  std::chrono::duration<size_t, std::nano> time_elapsed = t_end - t_start;
+  std::cout << "ema-sort-int: Time taken to generate random file of size " << size_mb << " MB is "
+            << time_elapsed.count() << " ns" << '\n';
   std::cout << "Random file generated: " << filename << " (" << size_mb << " MB)" << '\n';
 }
 

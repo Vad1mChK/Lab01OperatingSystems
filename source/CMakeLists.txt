@@ -26,6 +26,9 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         monolith/shell/commands/ListFilesCommand.cpp
         monolith/shell/commands/RunCommand.hpp
         monolith/shell/commands/RunCommand.cpp
+        monolith/shell/commands/RunNonBlockingCommand.hpp
+        monolith/shell/commands/RunNonBlockingCommand.cpp
+        monolith/shell/commands/RunCommand.cpp
         loaders/sleeper/Sleeper.hpp
         loaders/sleeper/Sleeper.cpp
         loaders/ema-sort-int/ExternalMemorySorter.hpp

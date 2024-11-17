@@ -9,4 +9,6 @@
 
 int RunProgram(std::vector<std::string>& args);
 
+pid_t RunNonBlockingProgram(std::vector<std::string>& args);
+
 #endif  // RUN_FUNCTIONS_H

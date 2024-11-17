@@ -1,14 +1,14 @@
-#include "RunCommand.hpp"
+#include "RunNonBlockingCommand.hpp"
 
 #include <iostream>
 
 #include "../util/run_functions.hpp"
 
-int RunCommand::Run() {
+int RunNonBlockingCommand::Run() {
   if (args_.empty()) {
     std::cout << "No binary specified to run." << '\n';
     return 1;
   }
 
-  return RunProgram(args_);
+  return RunNonBlockingProgram(args_);
 }

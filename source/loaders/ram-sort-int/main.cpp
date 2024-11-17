@@ -90,6 +90,7 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
+#ifdef UNISTD_AVAILABLE
 void RunFullBenchmarkParallel(
     const std::string& input_file,
     const std::string& output_file,
@@ -146,3 +147,4 @@ void RunFullBenchmarkParallel(
     }
   }
 }
+#endif

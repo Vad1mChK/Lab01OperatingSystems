@@ -11,6 +11,7 @@
 #include "commands/ListFilesCommand.hpp"
 #include "commands/PathToWorkingDirectoryCommand.hpp"
 #include "commands/RunCommand.hpp"
+#include "commands/RunNonBlockingCommand.hpp"
 
 using CommandFactoryFunction =
     std::function<std::unique_ptr<Command>(const std::vector<std::string>&)>;
@@ -34,8 +35,9 @@ std::map<std::string, CommandFactoryFunction> CommandMap() {
       {     "ls",
        [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }},
       {    "run",
-       [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }      }
-      // Add more command mappings here...
+       [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }      },
+      { "runnb",
+       [](const std::vector<std::string>& args) { return std::make_unique<RunNonBlockingCommand>(args);}}
   };
 }
 
