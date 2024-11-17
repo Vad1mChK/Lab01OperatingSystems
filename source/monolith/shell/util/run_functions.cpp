@@ -131,7 +131,7 @@ std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
 pid_t RunNonBlockingProgram(std::vector<std::string>& args) {
   (void) args;
   // TODO idk really
-  return -1
+  return -1;
 }
 
 std::pair<bool, pid_t> RunNonBlockingProgramUtil(const std::vector<const char*>& argv) {
