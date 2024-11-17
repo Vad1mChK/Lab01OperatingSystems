@@ -14,5 +14,6 @@ const int ArgcForGenerate = 4;
 const int ArgcForRamSort = 4;
 const int ArgcForEmaSort = 5;
 const int ArgcForFull = 5;
+const int ArgsForUnifiedSort = 8;
 
 #endif  // MONOLITH_EMA_RAM_SORTER_CLI_CONSTANTS_HPP

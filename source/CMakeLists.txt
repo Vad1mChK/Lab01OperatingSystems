@@ -29,16 +29,6 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         monolith/shell/commands/RunNonBlockingCommand.hpp
         monolith/shell/commands/RunNonBlockingCommand.cpp
         monolith/shell/commands/RunCommand.cpp
-        loaders/sleeper/Sleeper.hpp
-        loaders/sleeper/Sleeper.cpp
-        loaders/ema-sort-int/ExternalMemorySorter.hpp
-        loaders/ema-sort-int/ExternalMemorySorter.cpp
-        loaders/ema-sort-int/main.cpp
-        loaders/arg-printer/main.cpp
-        loaders/ram-sort-int/RamMemorySorter.hpp
-        loaders/ram-sort-int/RamMemorySorter.cpp
-        loaders/ram-sort-int/main.cpp
-        loaders/estimate-csort/main.cpp
         common/unistd_check.hpp
         monolith/shell/util/run_functions.cpp
         monolith/shell/util/string_functions.hpp
@@ -57,10 +47,10 @@ add_executable(arg-printer
 add_executable(ema-sort-int
         loaders/util/sorter_utils.cpp
         loaders/util/sorter_utils.hpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
         loaders/ema-sort-int/ExternalMemorySorter.cpp
         loaders/ema-sort-int/ExternalMemorySorter.hpp
         loaders/ema-sort-int/main.cpp
-        loaders/util/ema_ram_sorter_cli_constants.hpp
 )
 
 add_executable(ema-sort-int-opt
@@ -94,6 +84,18 @@ add_executable(estimate-csort
         loaders/estimate-csort/main.cpp
 )
 
+add_executable(ema-ram-sort-int
+        loaders/util/sorter_utils.cpp
+        loaders/util/sorter_utils.hpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
+        loaders/ema-ram-sort-int/main.cpp
+        loaders/ema-ram-sort-int/UnifiedMemorySorter.cpp
+        loaders/ema-ram-sort-int/UnifiedMemorySorter.hpp
+        loaders/ema-sort-int/ExternalMemorySorter.hpp
+        loaders/ema-sort-int/ExternalMemorySorter.cpp
+        loaders/ram-sort-int/RamMemorySorter.cpp
+        loaders/ram-sort-int/RamMemorySorter.hpp
+)
 
 target_compile_options(ema-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
 
