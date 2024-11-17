@@ -18,11 +18,13 @@ struct ProcessInfo {
   size_t nonvoluntary_context_switches;
   size_t major_page_faults;
   size_t minor_page_faults;
+
+  std::string ToString();
 };
 
 int RunProgram(std::vector<std::string>& args);
 
-void UpdateProcessStats(ProcessInfo& info);
+void CollectProcessStats(pid_t pid);
 
 std::pair<bool, ProcessInfo> RunNonBlockingProgram(
   std::vector<std::string>& args

@@ -5,6 +5,7 @@
 #include "Shell.hpp"
 
 #include <sys/wait.h>
+#include <sys/resource.h>
 
 #include <csignal>
 #include <iostream>
@@ -21,6 +22,10 @@ Shell::Shell() : input_(std::cin), output_(std::cout), running_(true) {
 
 Shell::Shell(std::istream& input, std::ostream& output)
     : input_(input), output_(output), running_(true) {
+}
+
+Shell::~Shell() {
+  Stop();
 }
 
 void Shell::PrintPlatform() {
@@ -52,6 +57,17 @@ void Shell::Start() {
 
   StartProcessMonitor();
   Run();
+}
+
+void Shell::StartProcessMonitor() {
+  monitor_thread_ = std::thread([this]() {
+      while (running_) {
+          CheckChildProcesses();
+
+          std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      }
+  });
+  monitor_thread_.detach();
 }
 
 void Shell::Run() {
@@ -88,66 +104,54 @@ std::string Shell::ReadNextCommandString() {
 }
 
 void Shell::Stop() {
+  StopProcessMonitor();
   running_ = false;
 }
 
-void Shell::StartProcessMonitor() {
-    monitor_thread_ = std::thread([this]() {
-        while (running_) {
-            std::vector<pid_t> pids_to_check;
+void Shell::StopProcessMonitor() {
+  if (monitor_thread_.joinable()) {
+    monitor_thread_.join();
+  }
+}
 
-            // Copy the list of PIDs to check without holding the lock
-            {
-                std::lock_guard<std::mutex> lock(active_processes_mutex_);
-                for (const auto& entry : active_processes_) {
-                    pids_to_check.push_back(entry.first);
-                }
-            }
+void Shell::CheckChildProcesses() {
+    std::vector<pid_t> terminated_pids; // To store PIDs of terminated processes
 
-            bool any_process_terminated = false;
+    for (auto& [pid, info] : active_processes_) {
+        int status;
+        struct rusage usage; // To collect resource usage statistics
 
-            // Iterate over the PIDs and check their status
-            for (pid_t pid : pids_to_check) {
-                int status;
-                pid_t result = waitpid(pid, &status, WNOHANG);
-                if (result == 0) {
-                    // Process is still running
-                    continue;
-                }
-                if (result == pid) {
-                    // Process terminated
-                    std::lock_guard<std::mutex> lock(active_processes_mutex_);
-                    auto it = active_processes_.find(pid);
-                    if (it != active_processes_.end()) {
-                        auto end_time = std::chrono::high_resolution_clock::now();
-                        auto duration_ms = std::chrono::duration<double, std::milli>(
-                            end_time - it->second.t_start
-                        );
-                        std::cout << "Process " << it->second.name << " (PID " << pid
-                                  << ") terminated after " << duration_ms.count() << " ms\n";
-                        RemoveActiveProcess(pid);
-                    }
-                    any_process_terminated = true;
-                } else if (result == -1) {
-                    // Error occurred
-                    if (errno == ECHILD) {
-                        // No such child process; remove from map
-                        std::lock_guard<std::mutex> lock(active_processes_mutex_);
-                        active_processes_.erase(pid);
-                    } else {
-                        perror("waitpid failed");
-                    }
-                }
-            }
+        pid_t result = wait4(pid, &status, WNOHANG, &usage); // Non-blocking wait for child process
 
-            if (!any_process_terminated) {
-                // Sleep for a short duration before checking again
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        if (result == 0) {
+            // Process is still running
+            continue;
+        } else if (result == pid) {
+            // Process has terminated
+            CollectUsageStatistics(info, usage);
+
+            // Print statistics
+            std::cout << info.ToString() << '\n';
+
+            // Mark process for removal
+            terminated_pids.push_back(pid);
+        } else if (result == -1) {
+            // Error handling
+            if (errno == ECHILD) {
+                // Process has already been cleaned up
+                terminated_pids.push_back(pid);
+            } else {
+                perror("wait4 failed");
             }
         }
-    });
-    monitor_thread_.detach();
+    }
+
+    // Remove terminated processes from the map
+    for (pid_t pid : terminated_pids) {
+        active_processes_.erase(pid);
+    }
 }
+
 
 std::map<pid_t, ProcessInfo>& Shell::GetActiveProcesses() {
   return active_processes_;
@@ -160,6 +164,17 @@ void Shell::AddActiveProcess(pid_t pid, ProcessInfo info) {
 void Shell::RemoveActiveProcess(pid_t pid) {
   active_processes_.erase(pid);
 }
+
+void Shell::CollectUsageStatistics(
+    ProcessInfo& info,
+    const struct rusage& usage
+) {
+  info.minor_page_faults = usage.ru_minflt;
+  info.major_page_faults = usage.ru_majflt;
+  info.voluntary_context_switches = usage.ru_nvcsw;
+  info.nonvoluntary_context_switches = usage.ru_nivcsw;
+}
+
 
 std::stack<std::string>& Shell::GetHistory() {
   return history_;

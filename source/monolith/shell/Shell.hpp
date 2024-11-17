@@ -29,14 +29,17 @@ private:
 public:
   Shell();
   Shell(std::istream& input, std::ostream& output);
+  ~Shell();
   void Start();
+  void StartProcessMonitor();
   void Run();
   void Stop();
-  void StartProcessMonitor();
+  void StopProcessMonitor();
+  void CheckChildProcesses();
   std::map<pid_t, ProcessInfo>& GetActiveProcesses();
   void AddActiveProcess(pid_t pid, ProcessInfo info);
-  void UpdateActiveProcess(pid_t pid, ProcessInfo info);
   void RemoveActiveProcess(pid_t pid);
+  void CollectUsageStatistics(ProcessInfo& info, const struct rusage& usage);
   std::stack<std::string>& GetHistory();
   std::string GetWorkingDirectory();
   void SetWorkingDirectory(const std::string&);

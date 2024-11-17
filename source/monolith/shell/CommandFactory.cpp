@@ -9,7 +9,6 @@
 #include "commands/HelpCommand.hpp"
 #include "commands/HistoryCommand.hpp"
 #include "commands/ListFilesCommand.hpp"
-#include "commands/ListProcessesCommand.hpp"
 #include "commands/PathToWorkingDirectoryCommand.hpp"
 #include "commands/RunCommand.hpp"
 #include "commands/RunNonBlockingCommand.hpp"
@@ -35,8 +34,6 @@ std::map<std::string, CommandFactoryFunction> CommandMap() {
        }                                                                                            },
       {     "ls",
        [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }},
-    { "lsproc",
-      [](const std::vector<std::string>& args) { return std::make_unique<ListProcessesCommand>(args); }},
       {    "run",
        [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }      },
       { "runnb",

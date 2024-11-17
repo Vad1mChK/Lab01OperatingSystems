@@ -12,7 +12,6 @@ std::map<std::string, std::string> CommandNameToDescription() {
        "[command_name]`"                                                                           },
       {"history",                     "Output last N commands (default N: 5). Usage: `history [n]`"},
       {     "ls",                                       "Lists all files in the working directory."},
-      { "lsproc", "Lists all running non-blocking processes launched by this shell." },
       {     "cd", "Changes the working directory. Usage: `cd <directory_path>` (path is mandatory)"},
       {    "pwd",                                       "Prints the path to the working directory."},
       {    "run",            "Runs the executable and times execution. Usage: `run [program_name]`"},

@@ -35,60 +35,20 @@ bool FileExistsInCurrentDir(const std::string& filename) {
   return (stat(filename.c_str(), &buffer) == 0);
 }
 
-void UpdateProcessStats(ProcessInfo& info) {
-  pid_t const pid = info.pid;
-  std::string const proc_stat_path = "/proc/" + std::to_string(pid) + "/stat";
-  std::string const proc_status_path = "/proc/" + std::to_string(pid) + "/status";
-  std::ifstream proc_stat_file(proc_stat_path);
+std::string ProcessInfo::ToString() {
+  std::stringstream strstr;
+  auto elapsed = std::chrono::duration<double>(
+    std::chrono::high_resolution_clock::now() - this->t_start
+  );
+  strstr << this->pid << '\n'
+    << '\t' << "name: " << this->name << '\n'
+    << '\t' << "elapsed: " << elapsed.count() << 's' << '\n'
+    << '\t' << "minor page faults: " << this->minor_page_faults << '\n'
+    << '\t' << "major page faults: " << this->major_page_faults << '\n'
+    << '\t' << "voluntary context switches: " << this->voluntary_context_switches << '\n'
+    << '\t' << "nonvoluntary context switches: " << this->nonvoluntary_context_switches << '\n';
 
-  if (!proc_stat_file.is_open()) {
-    std::cout << "Failed to open process stat: pid " << pid << '\n';
-    return;
-  }
-
-  std::string stat_line;
-  std::getline(proc_stat_file, stat_line);
-  proc_stat_file.close();
-
-  std::istringstream stat_stream(stat_line);
-  std::vector stat_fields((std::istream_iterator<std::string>(stat_stream)),
-                                       std::istream_iterator<std::string>());
-
-  // /proc/(pid)/stat line:
-  // [1]: comm
-  // [9]: minflt
-  // [10]: cminflt
-  // [11]: majflt
-
-  if (stat_fields.size() < 12) {
-    std::cerr << "Unexpected /proc stat format: pid " << pid << '\n';
-    return;
-  }
-
-  info.name = stat_fields[1];
-  info.minor_page_faults = std::stoi(stat_fields[9]) + std::stoi(stat_fields[10]);
-  info.major_page_faults = std::stoi(stat_fields[11]);
-
-  std::ifstream proc_status_file(proc_status_path);
-  if (!proc_status_file.is_open()) {
-    std::cout << "Failed to open process status: pid " << pid << '\n';
-    return;
-  }
-
-  std::string status_line;
-  std::string line;
-  size_t voluntary = 0, nonvoluntary = 0;
-
-  while (std::getline(proc_status_file, line)) {
-    if (line.find("voluntary_ctxt_switches:") != std::string::npos) {
-      voluntary = std::stoi(line.substr(line.find(":") + 1));
-    } else if (line.find("nonvoluntary_ctxt_switches:") != std::string::npos) {
-      nonvoluntary = std::stoi(line.substr(line.find(":") + 1));
-    }
-  }
-
-  info.voluntary_context_switches = voluntary;
-  info.nonvoluntary_context_switches = nonvoluntary;
+  return strstr.str();
 }
 
 int RunProgram(std::vector<std::string>& args) {
