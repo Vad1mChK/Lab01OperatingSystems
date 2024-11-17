@@ -41,6 +41,8 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         loaders/estimate-csort/main.cpp
         common/unistd_check.hpp
         monolith/shell/util/run_functions.cpp
+        monolith/shell/util/string_functions.hpp
+        monolith/shell/util/string_functions.cpp
 )
 
 add_executable(sleeper

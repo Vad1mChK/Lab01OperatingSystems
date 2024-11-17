@@ -1,6 +1,13 @@
 # test/CMakeLists.txt
 
 # Define paths for test sources and includes
+# Enable testing
+enable_testing()
+
+# Locate Google Test
+find_package(GTest REQUIRED)
+
+# Define paths for test sources and includes
 get_filename_component(MONOLITH_TEST_INCLUDE_PATH "." ABSOLUTE)
 get_filename_component(MONOLITH_TEST_SOURCE_PATH "./${PROJECT_NAME}" ABSOLUTE)
 
@@ -12,8 +19,12 @@ file(GLOB_RECURSE MONOLITH_TEST_SOURCES CONFIGURE_DEPENDS *.hpp *.cpp)
 
 # Create the test executable
 add_executable(${MONOLITH_TEST_TARGET} ${MONOLITH_TEST_SOURCES}
+        monolith/TestMain.cpp
         monolith/RamMemorySorterTestSuite.cpp
-        monolith/ExternalMemorySorterTestSuite.cpp)
+        monolith/ExternalMemorySorterTestSuite.cpp
+        monolith/ShellTestSuite.cpp
+        monolith/StringFunctionsTestSuite.cpp
+)
 
 # Include directories for the test target
 target_include_directories(${MONOLITH_TEST_TARGET} PUBLIC ${MONOLITH_TEST_INCLUDE_PATH})
@@ -27,5 +38,4 @@ target_link_libraries(
 )
 
 # Enable automatic discovery of Google Test tests
-include(GoogleTest)
 gtest_discover_tests(${MONOLITH_TEST_TARGET})
