@@ -3,7 +3,10 @@
 //
 #include "run_functions.hpp"
 
+#include <fstream>
 #include <iostream>
+#include <iterator>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -23,11 +26,69 @@
 
 std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv);
 
-std::pair<bool, pid_t> RunNonBlockingProgramUtil(std::vector<const char*> argv);
+std::pair<bool, pid_t> RunNonBlockingProgramUtil(
+  std::vector<const char*> argv
+);
 
 bool FileExistsInCurrentDir(const std::string& filename) {
   struct stat buffer{};
   return (stat(filename.c_str(), &buffer) == 0);
+}
+
+void UpdateProcessStats(ProcessInfo& info) {
+  pid_t const pid = info.pid;
+  std::string const proc_stat_path = "/proc/" + std::to_string(pid) + "/stat";
+  std::string const proc_status_path = "/proc/" + std::to_string(pid) + "/status";
+  std::ifstream proc_stat_file(proc_stat_path);
+
+  if (!proc_stat_file.is_open()) {
+    std::cout << "Failed to open process stat: pid " << pid << '\n';
+    return;
+  }
+
+  std::string stat_line;
+  std::getline(proc_stat_file, stat_line);
+  proc_stat_file.close();
+
+  std::istringstream stat_stream(stat_line);
+  std::vector stat_fields((std::istream_iterator<std::string>(stat_stream)),
+                                       std::istream_iterator<std::string>());
+
+  // /proc/(pid)/stat line:
+  // [1]: comm
+  // [9]: minflt
+  // [10]: cminflt
+  // [11]: majflt
+
+  if (stat_fields.size() < 12) {
+    std::cerr << "Unexpected /proc stat format: pid " << pid << '\n';
+    return;
+  }
+
+  info.name = stat_fields[1];
+  info.minor_page_faults = std::stoi(stat_fields[9]) + std::stoi(stat_fields[10]);
+  info.major_page_faults = std::stoi(stat_fields[11]);
+
+  std::ifstream proc_status_file(proc_status_path);
+  if (!proc_status_file.is_open()) {
+    std::cout << "Failed to open process status: pid " << pid << '\n';
+    return;
+  }
+
+  std::string status_line;
+  std::string line;
+  size_t voluntary = 0, nonvoluntary = 0;
+
+  while (std::getline(proc_status_file, line)) {
+    if (line.find("voluntary_ctxt_switches:") != std::string::npos) {
+      voluntary = std::stoi(line.substr(line.find(":") + 1));
+    } else if (line.find("nonvoluntary_ctxt_switches:") != std::string::npos) {
+      nonvoluntary = std::stoi(line.substr(line.find(":") + 1));
+    }
+  }
+
+  info.voluntary_context_switches = voluntary;
+  info.nonvoluntary_context_switches = nonvoluntary;
 }
 
 int RunProgram(std::vector<std::string>& args) {
@@ -79,7 +140,7 @@ std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
   cl_args.exit_signal = SIGCHLD;
 
   int pipefd[2];
-  if (pipe(static_cast<int*>(pipefd)) == -1) {
+  if (pipe(pipefd) == -1) {
     perror("pipe failed");
     return {false, 2};
   }
@@ -128,15 +189,59 @@ std::pair<bool, int> RunProgramUtil(std::vector<const char*> argv) {
   return {false, 4};
 }
 
-pid_t RunNonBlockingProgram(std::vector<std::string>& args) {
-  (void) args;
-  // TODO idk really
-  return -1;
+std::pair<bool, ProcessInfo> RunNonBlockingProgram(
+  std::vector<std::string>& args
+) {
+  if (!args[0].starts_with("./") && FileExistsInCurrentDir(args[0])) {
+    args[0] = "./" + args[0];  // Prepend "./" if necessary
+  }
+
+  std::vector<const char*> argv;
+  argv.reserve(args.size());
+  for (const auto& arg : args) {
+    argv.push_back(arg.c_str());
+  }
+  argv.push_back(nullptr);
+
+  auto [success, pid] = RunNonBlockingProgramUtil(argv);
+  if (!success) {
+    std::cerr << "Failed to start non-blocking program: " << args[0] << '\n';
+    return { false, {} };
+  }
+
+  std::cout << "Started non-blocking process with PID: " << pid << '\n';
+
+  return { true, {
+    .pid = pid,
+    .name = argv[0],
+    .t_start = std::chrono::high_resolution_clock::now(),
+    .voluntary_context_switches = 0,
+    .nonvoluntary_context_switches = 0,
+    .major_page_faults = 0,
+    .minor_page_faults = 0
+  } };
 }
 
-std::pair<bool, pid_t> RunNonBlockingProgramUtil(const std::vector<const char*>& argv) {
-  (void) argv;
-  return { false, -1 };
+std::pair<bool, int> RunNonBlockingProgramUtil(
+    std::vector<const char*> argv
+) {
+  struct clone_args cl_args = {};
+  cl_args.flags = 0;
+  cl_args.exit_signal = SIGCHLD;
+
+  pid_t pid = static_cast<pid_t>(syscall(SYS_clone3, &cl_args, sizeof(cl_args)));
+  if (pid < 0) {
+    perror("clone3 failed");
+    return {false, -1};
+  }
+
+  if (pid == 0) {
+    execvp(argv[0], const_cast<char* const*>(argv.data()));
+    perror("execvp failed");
+    _exit(1);
+  }
+
+  return {true, pid};
 }
 
 #else

@@ -43,6 +43,8 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         monolith/shell/util/run_functions.cpp
         monolith/shell/util/string_functions.hpp
         monolith/shell/util/string_functions.cpp
+        monolith/shell/commands/ListProcessesCommand.hpp
+        monolith/shell/commands/ListProcessesCommand.cpp
 )
 
 add_executable(sleeper

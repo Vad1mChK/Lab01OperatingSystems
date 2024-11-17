@@ -4,12 +4,15 @@
 
 #include "Shell.hpp"
 
+#include <sys/wait.h>
+
+#include <csignal>
 #include <iostream>
 #include <string>
 
+#include "../../common/unistd_check.hpp"
 #include "Command.hpp"
 #include "CommandFactory.hpp"
-#include "../../common/unistd_check.hpp"
 #include "util/path_functions.hpp"
 #include "util/string_functions.hpp"
 
@@ -45,14 +48,15 @@ void Shell::Start() {
   }
   output_ << "Current working directory is: " << pwd_string << '\n';
   working_directory_ = pwd_string;
-  this->Run();
+  active_processes_ = {};
+
+  StartProcessMonitor();
+  Run();
 }
 
 void Shell::Run() {
   while (this->running_) {
-    std::string prompt = "[" + ShortenEachPart(
-      working_directory_, '/', 1, false
-      ) + "]> ";
+    std::string prompt = "[" + ShortenEachPart(working_directory_, '/', 1, false) + "]> ";
     output_ << prompt;
     std::string command_string = ReadNextCommandString();
     if (IsBlank(command_string)) {
@@ -85,6 +89,76 @@ std::string Shell::ReadNextCommandString() {
 
 void Shell::Stop() {
   running_ = false;
+}
+
+void Shell::StartProcessMonitor() {
+    monitor_thread_ = std::thread([this]() {
+        while (running_) {
+            std::vector<pid_t> pids_to_check;
+
+            // Copy the list of PIDs to check without holding the lock
+            {
+                std::lock_guard<std::mutex> lock(active_processes_mutex_);
+                for (const auto& entry : active_processes_) {
+                    pids_to_check.push_back(entry.first);
+                }
+            }
+
+            bool any_process_terminated = false;
+
+            // Iterate over the PIDs and check their status
+            for (pid_t pid : pids_to_check) {
+                int status;
+                pid_t result = waitpid(pid, &status, WNOHANG);
+                if (result == 0) {
+                    // Process is still running
+                    continue;
+                }
+                if (result == pid) {
+                    // Process terminated
+                    std::lock_guard<std::mutex> lock(active_processes_mutex_);
+                    auto it = active_processes_.find(pid);
+                    if (it != active_processes_.end()) {
+                        auto end_time = std::chrono::high_resolution_clock::now();
+                        auto duration_ms = std::chrono::duration<double, std::milli>(
+                            end_time - it->second.t_start
+                        );
+                        std::cout << "Process " << it->second.name << " (PID " << pid
+                                  << ") terminated after " << duration_ms.count() << " ms\n";
+                        RemoveActiveProcess(pid);
+                    }
+                    any_process_terminated = true;
+                } else if (result == -1) {
+                    // Error occurred
+                    if (errno == ECHILD) {
+                        // No such child process; remove from map
+                        std::lock_guard<std::mutex> lock(active_processes_mutex_);
+                        active_processes_.erase(pid);
+                    } else {
+                        perror("waitpid failed");
+                    }
+                }
+            }
+
+            if (!any_process_terminated) {
+                // Sleep for a short duration before checking again
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+        }
+    });
+    monitor_thread_.detach();
+}
+
+std::map<pid_t, ProcessInfo>& Shell::GetActiveProcesses() {
+  return active_processes_;
+}
+
+void Shell::AddActiveProcess(pid_t pid, ProcessInfo info) {
+  active_processes_[pid] = info;
+}
+
+void Shell::RemoveActiveProcess(pid_t pid) {
+  active_processes_.erase(pid);
 }
 
 std::stack<std::string>& Shell::GetHistory() {
