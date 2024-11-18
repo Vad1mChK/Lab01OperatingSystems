@@ -133,6 +133,12 @@ void Shell::CheckChildProcesses() {
             // Print statistics
             std::cout << info.ToString() << '\n';
 
+            auto duration = std::chrono::duration<double, std::milli>(
+              std::chrono::high_resolution_clock::now() - info.t_start
+            );
+            std::cout << "Process " << info.name << "finished in "
+              << duration.count() << " ms" << '\n';
+
             // Mark process for removal
             terminated_pids.push_back(pid);
         } else if (result == -1) {
