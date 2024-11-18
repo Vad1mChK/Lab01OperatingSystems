@@ -45,6 +45,8 @@ void RamMemorySorter::sortInMemory(
     return;
   }
 
+  auto t_start = std::chrono::steady_clock::now();
+
   std::streamsize file_size = input.tellg();
   input.seekg(0, std::ios::beg);
 
@@ -71,6 +73,11 @@ void RamMemorySorter::sortInMemory(
   output.write(reinterpret_cast<const char*>(data.data()), file_size);
   output.close();
 
+  auto t_end = std::chrono::steady_clock::now();
+  std::chrono::duration<size_t, std::nano> time_elapsed = t_end - t_start;
+  std::cout << "ram-sort-int: Time taken to sort data from file " << input_filename << " MB is "
+      << time_elapsed.count() << " ns" << '\n';
+
   std::cout << "In-memory sort completed. Output file: " << output_filename << '\n';
 }
 
@@ -81,6 +88,8 @@ void RamMemorySorter::checkFileSorted(const std::string& filename) {
     std::cout << "Failed to open file for checking: " << filename << '\n';
     return;
   }
+
+  auto t_start = std::chrono::steady_clock::now();
 
   uint32_t prev_value = 0;
   bool first = true;
@@ -111,6 +120,11 @@ void RamMemorySorter::checkFileSorted(const std::string& filename) {
   }
 
   input.close();
+
+  auto t_end = std::chrono::steady_clock::now();
+  std::chrono::duration<size_t, std::nano> time_elapsed = t_end - t_start;
+  std::cout << "ram-sort-int: Time taken to check if file " << filename << " is sorted is "
+      << time_elapsed.count() << " ns" << '\n';
 }
 
 // Print help message
