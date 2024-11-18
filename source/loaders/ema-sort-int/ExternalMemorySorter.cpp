@@ -1,6 +1,6 @@
 #include "ExternalMemorySorter.hpp"
 
-#include <bits/fs_ops.h>
+#include <filesystem>
 
 #include <algorithm>
 #include <chrono>
@@ -176,9 +176,8 @@ void ExternalMemorySorter::mergeChunksAndSave(
 void ExternalMemorySorter::externalMemorySort(
     const std::string& input_filename, const std::string& output_filename, size_t chunk_size_mb
 ) {
-  int error_code = 0;
-  std::string temp_directory = std::filesystem::temp_directory_path(&error_code);
-  if (error_code != 0) {
+  std::string temp_directory = std::filesystem::temp_directory_path();
+  if (temp_directory.empty()) {
     temp_directory = ".";
   }
 
