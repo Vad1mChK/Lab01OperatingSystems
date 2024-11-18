@@ -136,7 +136,7 @@ void Shell::CheckChildProcesses() {
             auto duration = std::chrono::duration<double, std::milli>(
               std::chrono::high_resolution_clock::now() - info.t_start
             );
-            std::cout << "Process " << info.name << "finished in "
+            std::cout << "Process " << info.name << " finished in "
               << duration.count() << " ms" << '\n';
 
             // Mark process for removal

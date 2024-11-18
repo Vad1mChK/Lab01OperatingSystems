@@ -1,6 +1,9 @@
 #include "ExternalMemorySorter.hpp"
 
+#include <bits/fs_ops.h>
+
 #include <algorithm>
+#include <chrono>
 #include <cstdint>
 #include <cstdio>  // For remove()
 #include <fstream>
@@ -9,7 +12,6 @@
 #include <queue>
 #include <sstream>
 #include <vector>
-#include <chrono>
 
 #include "../util/sorter_utils.hpp"
 
@@ -174,7 +176,11 @@ void ExternalMemorySorter::mergeChunksAndSave(
 void ExternalMemorySorter::externalMemorySort(
     const std::string& input_filename, const std::string& output_filename, size_t chunk_size_mb
 ) {
-  std::string temp_directory = ".";  // Use current directory for temp files
+  int error_code = 0;
+  std::string temp_directory = std::filesystem::temp_directory_path(&error_code);
+  if (error_code != 0) {
+    temp_directory = ".";
+  }
 
   // Step 1: Sort chunks and save them to temporary files
   sortByChunksAndSave(input_filename, temp_directory, chunk_size_mb);
