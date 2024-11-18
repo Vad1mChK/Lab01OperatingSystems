@@ -97,7 +97,11 @@ add_executable(ema-ram-sort-int
         loaders/ram-sort-int/RamMemorySorter.hpp
 )
 
+target_compile_options(ema-sort-int PRIVATE -O0)
+
 target_compile_options(ema-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
+
+target_compile_options(ram-sort-int PRIVATE -O0)
 
 target_compile_options(ram-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
 

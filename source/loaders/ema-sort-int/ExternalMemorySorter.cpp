@@ -49,6 +49,8 @@ void ExternalMemorySorter::sortByChunksAndSave(
     return;
   }
 
+  auto t_start = std::chrono::steady_clock::now();
+
   size_t chunk_size_in_elements = chunk_size_mb * BytesInMb / sizeof(uint32_t);
   std::vector<uint32_t> buffer(chunk_size_in_elements);
 
@@ -92,6 +94,11 @@ void ExternalMemorySorter::sortByChunksAndSave(
   }
 
   input.close();
+
+  auto t_end = std::chrono::steady_clock::now();
+  std::chrono::duration<size_t, std::nano> const time_elapsed = t_end - t_start;
+  std::cout << "ema-sort-int: Time to sort chunks from" << input_filename << " is "
+          << time_elapsed.count() << " ns" << '\n';
 }
 
 // Merge sorted chunks from temporary files into the output file
@@ -101,6 +108,7 @@ void ExternalMemorySorter::mergeChunksAndSave(
     const std::string& output_filename,
     size_t num_chunks
 ) {
+  auto t_start = std::chrono::steady_clock::now();
   struct HeapNode final {
     uint32_t value;
     size_t chunk_index;
@@ -169,6 +177,11 @@ void ExternalMemorySorter::mergeChunksAndSave(
     }
   }
 
+  auto t_end = std::chrono::steady_clock::now();
+  std::chrono::duration<size_t, std::nano> const time_elapsed = t_end - t_start;
+  std::cout << "ema-sort-int: Time to merge chunks into" << output_filename << " is "
+          << time_elapsed.count() << " ns" << '\n';
+
   output.close();
 }
 
@@ -176,6 +189,7 @@ void ExternalMemorySorter::mergeChunksAndSave(
 void ExternalMemorySorter::externalMemorySort(
     const std::string& input_filename, const std::string& output_filename, size_t chunk_size_mb
 ) {
+
   std::string temp_directory = std::filesystem::temp_directory_path();
   if (temp_directory.empty()) {
     temp_directory = ".";
@@ -211,6 +225,8 @@ void ExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
     return;
   }
 
+  auto t_start = std::chrono::steady_clock::now();
+
   uint32_t prev_value = 0;
   bool first = true;
   bool is_sorted = true;
@@ -240,6 +256,11 @@ void ExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
   }
 
   input.close();
+
+  auto t_end = std::chrono::steady_clock::now();
+  std::chrono::duration<size_t, std::nano> time_elapsed = t_end - t_start;
+  std::cout << "ema-sort-int: Time to check if " << input_filename << " is sorted is "
+          << time_elapsed.count() << " ns" << '\n';
 }
 
 // Print help message
