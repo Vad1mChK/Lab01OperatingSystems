@@ -33,6 +33,8 @@ set(MONOLITH_LIB_SOURCES ${MONOLITH_SOURCES}
         monolith/shell/util/run_functions.cpp
         monolith/shell/util/string_functions.hpp
         monolith/shell/util/string_functions.cpp
+        monolith/shell/commands/RunNonBlockingForCommand.hpp
+        monolith/shell/commands/RunNonBlockingForCommand.cpp
 )
 
 add_executable(sleeper
@@ -99,11 +101,11 @@ add_executable(ema-ram-sort-int
 
 target_compile_options(ema-sort-int PRIVATE -O0)
 
-target_compile_options(ema-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
+target_compile_options(ema-sort-int-opt PRIVATE -O3 -march=native -funroll-loops)
 
 target_compile_options(ram-sort-int PRIVATE -O0)
 
-target_compile_options(ram-sort-int-opt PRIVATE -O3 -march=native -ffast-math -funroll-loops)
+target_compile_options(ram-sort-int-opt PRIVATE -O3 -march=native -funroll-loops)
 
 set(MONOLITH_APP_SOURCES monolith/app/Main.cpp)
 

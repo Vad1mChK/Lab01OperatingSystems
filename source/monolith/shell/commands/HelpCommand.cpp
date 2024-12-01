@@ -14,8 +14,10 @@ std::map<std::string, std::string> CommandNameToDescription() {
       {     "ls",                                       "Lists all files in the working directory."},
       {     "cd", "Changes the working directory. Usage: `cd <directory_path>` (path is mandatory)"},
       {    "pwd",                                       "Prints the path to the working directory."},
-      {    "run",            "Runs the executable and times execution. Usage: `run [program_name]`"},
-      { "runnb", "Runs the executable in non-blocking mode and times execution. Usage: `runnb [program_name]`"}
+      {    "run",            "Runs the executable and times execution. Usage: `run <program_name>`"},
+      { "runnb", "Runs the executable in non-blocking mode and times execution. Usage: `runnb <program_name>`"},
+    { "runnbfor", "Runs the executables in non-blocking mode several times, substituting the"
+        " variable name, and times execution. Usage: `runnbfor <name>=<start>:<end>[:<step>] <program_name> [...args]`"}
   };
 }
 

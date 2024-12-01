@@ -12,6 +12,7 @@
 #include "commands/PathToWorkingDirectoryCommand.hpp"
 #include "commands/RunCommand.hpp"
 #include "commands/RunNonBlockingCommand.hpp"
+#include "commands/RunNonBlockingForCommand.hpp"
 
 using CommandFactoryFunction =
     std::function<std::unique_ptr<Command>(const std::vector<std::string>&)>;
@@ -37,7 +38,9 @@ std::map<std::string, CommandFactoryFunction> CommandMap() {
       {    "run",
        [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }      },
       { "runnb",
-       [](const std::vector<std::string>& args) { return std::make_unique<RunNonBlockingCommand>(args);}}
+       [](const std::vector<std::string>& args) { return std::make_unique<RunNonBlockingCommand>(args);}},
+    { "runnbfor",
+    [](const std::vector<std::string>& args) { return std::make_unique<RunNonBlockingForCommand>(args);}}
   };
 }
 
