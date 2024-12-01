@@ -19,28 +19,32 @@ using CommandFactoryFunction =
 
 std::map<std::string, CommandFactoryFunction> CommandMap() {
   return {
-      {   "help",
+      {    "help",
        [](const std::vector<std::string>& args) { return std::make_unique<HelpCommand>(args); }     },
-      {   "exit",
+      {    "exit",
        [](const std::vector<std::string>& args) { return std::make_unique<ExitCommand>(args); }     },
-      {"history",
+      { "history",
        [](const std::vector<std::string>& args) { return std::make_unique<HistoryCommand>(args); }  },
-      {    "pwd",
+      {     "pwd",
        [](const std::vector<std::string>& args) {
        return std::make_unique<PathToWorkingDirectoryCommand>(args);
        }                                                                                            },
-      {     "cd",
+      {      "cd",
        [](const std::vector<std::string>& args) {
        return std::make_unique<ChangeDirectoryCommand>(args);
        }                                                                                            },
-      {     "ls",
+      {      "ls",
        [](const std::vector<std::string>& args) { return std::make_unique<ListFilesCommand>(args); }},
-      {    "run",
+      {     "run",
        [](const std::vector<std::string>& args) { return std::make_unique<RunCommand>(args); }      },
-      { "runnb",
-       [](const std::vector<std::string>& args) { return std::make_unique<RunNonBlockingCommand>(args);}},
-    { "runnbfor",
-    [](const std::vector<std::string>& args) { return std::make_unique<RunNonBlockingForCommand>(args);}}
+      {   "runnb",
+       [](const std::vector<std::string>& args) {
+       return std::make_unique<RunNonBlockingCommand>(args);
+       }                                                                                            },
+      {"runnbfor",
+       [](const std::vector<std::string>& args) {
+       return std::make_unique<RunNonBlockingForCommand>(args);
+       }                                                                                            }
   };
 }
 

@@ -15,4 +15,4 @@ public:
   int Run() override;
 };
 
-#endif //RUNNBFORCOMMAND_H
+#endif  // RUNNBFORCOMMAND_H
