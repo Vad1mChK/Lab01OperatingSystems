@@ -113,7 +113,7 @@ add_library(${PROJECT_NAME} STATIC ${MONOLITH_LIB_SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${MONOLITH_INCLUDE_PATH})
 
 add_executable(${PROJECT_NAME}-app ${MONOLITH_APP_SOURCES})
-target_compile_options(${PROJECT_NAME} PRIVATE -O3 -march=native -funroll-loops)
+# target_compile_options(${PROJECT_NAME} PRIVATE -O3 -march=native -funroll-loops)
 set_property(TARGET ${PROJECT_NAME}-app PROPERTY OUTPUT_NAME ${PROJECT_NAME})
 target_link_libraries(
         ${PROJECT_NAME}-app PRIVATE

@@ -19,7 +19,6 @@ private:
   std::ostream& output_;
   bool running_;
   std::map<pid_t, ProcessInfo> active_processes_;
-  std::mutex active_processes_mutex_;
   std::thread monitor_thread_;
   inline static const std::string PromptString = "> ";
   std::stack<std::string> history_;
