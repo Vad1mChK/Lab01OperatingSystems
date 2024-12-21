@@ -54,6 +54,26 @@ set(MONOLITH_LIB_SOURCES
 
         # Common utilities
         common/unistd_check.hpp
+
+        # Loaders
+        loaders/sleeper/Sleeper.hpp
+        loaders/sleeper/Sleeper.cpp
+
+        loaders/ema-sort-int/ExternalMemorySorter.hpp
+        loaders/ema-sort-int/ExternalMemorySorter.cpp
+
+        loaders/ema-ram-sort-int/UnifiedMemorySorter.hpp
+        loaders/ema-ram-sort-int/UnifiedMemorySorter.cpp
+
+#        loaders/ema-sort-int-directio/DirectIoExternalMemorySorter.hpp
+#        loaders/ema-sort-int-directio/DirectIoExternalMemorySorter.cpp
+
+        loaders/ram-sort-int/RamMemorySorter.hpp
+        loaders/ram-sort-int/RamMemorySorter.cpp
+
+        loaders/util/ema_ram_sorter_cli_constants.hpp
+        loaders/util/sorter_utils.hpp
+        loaders/util/sorter_utils.cpp
 )
 
 # Define executables that have their own main.cpp and do not contribute to the shared library
