@@ -27,6 +27,8 @@ void RamMemorySorter::generateRandomFile(const std::string& filename, size_t siz
     file.write(reinterpret_cast<const char*>(&number), sizeof(number));
   }
 
+  file.close();
+
   auto t_end = std::chrono::steady_clock::now();
   std::chrono::duration<size_t, std::nano> time_elapsed = t_end - t_start;
   std::cout << "ram-sort-int: Time taken to generate random file of size " << size_mb << " MB is "
@@ -62,6 +64,7 @@ void RamMemorySorter::sortInMemory(
   // Sort the data in memory
   std::cout << "Sorting " << num_elements << " elements in memory..." << '\n';
   std::sort(data.begin(), data.end());
+  // for(size_t i = 0; i < num_elements * 1024; ++i);
 
   // Write the sorted data to the output file
   std::ofstream output(output_filename, std::ios::binary);

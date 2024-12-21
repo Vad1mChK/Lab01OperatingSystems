@@ -5,7 +5,7 @@
 #include <string>
 
 #include "../util/ema_ram_sorter_cli_constants.hpp"
-#include "ExternalMemorySorter.hpp"
+#include "DirectIoExternalMemorySorter.hpp"
 
 int main(int argc, char* argv[]) {
   if (argc < ArgcMin) {
@@ -13,14 +13,12 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  std::string command = argv[1];
-
-  if (command == "generate") {
+  if (std::string const command = argv[1]; command == "generate") {
     if (argc != ArgcForGenerate) {
       std::cout << "Usage: prog generate <output_file> <size_mb>" << '\n';
       return 1;
     }
-    std::string output_file = argv[2];
+    std::string const output_file = argv[2];
     size_t size_mb = std::stoull(argv[3]);
     DirectIoExternalMemorySorter::generateRandomFile(output_file, size_mb);
   } else if (command == "sort") {
@@ -28,16 +26,16 @@ int main(int argc, char* argv[]) {
       std::cout << "Usage: prog sort <input_file> <output_file> <chunk_size_mb>" << '\n';
       return 1;
     }
-    std::string input_file = argv[2];
-    std::string output_file = argv[3];
-    size_t chunk_size_mb = std::stoull(argv[4]);
+    std::string const input_file = argv[2];
+    std::string const output_file = argv[3];
+    size_t const chunk_size_mb = std::stoull(argv[4]);
     DirectIoExternalMemorySorter::externalMemorySort(input_file, output_file, chunk_size_mb);
   } else if (command == "check") {
     if (argc != ArgcForCheck) {
       std::cout << "Usage: prog check <input_file>" << '\n';
       return 1;
     }
-    std::string input_file = argv[2];
+    std::string const input_file = argv[2];
     DirectIoExternalMemorySorter::checkFileSorted(input_file);
   } else if (command == "help") {
     DirectIoExternalMemorySorter::printHelp();
@@ -46,9 +44,9 @@ int main(int argc, char* argv[]) {
       std::cout << "Usage: prog full-benchmark <input_file> <output_file> <repeat-count>" << '\n';
       return 1;
     }
-    std::string input_file = argv[2];
-    std::string output_file = argv[3];
-    size_t repeat_count = std::stoull(argv[4]);
+    std::string const input_file = argv[2];
+    std::string const output_file = argv[3];
+    size_t const repeat_count = std::stoull(argv[4]);
 
     // Fallback to sequential execution
     for (size_t i = 0; i < repeat_count; ++i) {

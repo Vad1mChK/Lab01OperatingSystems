@@ -37,7 +37,7 @@ TEST_F(ExternalMemorySorterTest, GenerateRandomFile) {
   std::string filename = temp_dir + "test_random_file.dat";
   size_t file_size_mb = 8;
 
-  ASSERT_NO_THROW(ExternalMemorySorter::generateRandomFile(filename, file_size_mb));
+  ASSERT_NO_THROW(DirectIoExternalMemorySorter::generateRandomFile(filename, file_size_mb));
 
   std::ifstream file(filename, std::ios::binary | std::ios::ate);
   ASSERT_TRUE(file.is_open()) << "Generated file could not be opened.";
@@ -54,11 +54,11 @@ TEST_F(ExternalMemorySorterTest, ExternalMemorySort) {
   size_t chunk_size_mb = 2;
 
   // Step 1: Generate random file
-  ASSERT_NO_THROW(ExternalMemorySorter::generateRandomFile(input_filename, file_size_mb));
+  ASSERT_NO_THROW(DirectIoExternalMemorySorter::generateRandomFile(input_filename, file_size_mb));
 
   // Step 2: Sort the file
   ASSERT_NO_THROW(
-      ExternalMemorySorter::externalMemorySort(input_filename, output_filename, chunk_size_mb)
+      DirectIoExternalMemorySorter::externalMemorySort(input_filename, output_filename, chunk_size_mb)
   );
 
   // Step 3: Verify the file is sorted
@@ -84,12 +84,12 @@ TEST_F(ExternalMemorySorterTest, CheckFileSorted) {
   file.close();
 
   // Check if the file is sorted
-  ASSERT_NO_THROW(ExternalMemorySorter::checkFileSorted(filename));
+  ASSERT_NO_THROW(DirectIoExternalMemorySorter::checkFileSorted(filename));
 
   deleteFile(filename);
 }
 
 // Test case: Print help
 TEST_F(ExternalMemorySorterTest, PrintHelp) {
-  ASSERT_NO_THROW(ExternalMemorySorter::printHelp());
+  ASSERT_NO_THROW(DirectIoExternalMemorySorter::printHelp());
 }

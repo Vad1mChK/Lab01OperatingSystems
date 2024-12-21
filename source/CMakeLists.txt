@@ -99,6 +99,47 @@ add_executable(ema-ram-sort-int
         loaders/ram-sort-int/RamMemorySorter.hpp
 )
 
+# ---
+
+# Path for lab2_library
+set(LAB2_LIBRARY_PATH "${CMAKE_SOURCE_DIR}/lib")
+set(LAB2_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/lib")
+
+# Find the library
+find_library(LAB2_LIB lab2_library PATHS ${LAB2_LIBRARY_PATH})
+if (NOT LAB2_LIB)
+    message(FATAL_ERROR "lab2_library not found in ${LAB2_LIBRARY_PATH}")
+endif()
+
+# Find the include directory
+find_path(LAB2_INCLUDE_DIR lab2_library.hpp PATHS ${LAB2_INCLUDE_PATH})
+if (NOT LAB2_INCLUDE_DIR)
+    message(FATAL_ERROR "lab2_library.hpp not found in ${LAB2_INCLUDE_PATH}")
+endif()
+
+# Add executable
+add_executable(ema-sort-int-directio
+        loaders/util/sorter_utils.cpp
+        loaders/util/sorter_utils.hpp
+        loaders/ema-sort-int-directio/main.cpp
+        loaders/ema-sort-int-directio/DirectIoExternalMemorySorter.hpp
+        loaders/ema-sort-int-directio/DirectIoExternalMemorySorter.cpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
+)
+
+# Include the headers
+target_include_directories(ema-sort-int-directio PRIVATE ${LAB2_INCLUDE_DIR})
+
+# Link the library
+target_link_libraries(ema-sort-int-directio PRIVATE ${LAB2_LIB})
+
+message(STATUS "Lab2 Library Path: ${LAB2_LIBRARY_PATH}")
+message(STATUS "Lab2 Include Path: ${LAB2_INCLUDE_PATH}")
+message(STATUS "Lab2 Lib Found: ${LAB2_LIB}")
+
+
+# ---
+
 target_compile_options(ema-sort-int PRIVATE -O0)
 
 target_compile_options(ema-sort-int-opt PRIVATE -O3 -march=native -funroll-loops)
@@ -109,8 +150,9 @@ target_compile_options(ram-sort-int-opt PRIVATE -O3 -march=native -funroll-loops
 
 set(MONOLITH_APP_SOURCES monolith/app/Main.cpp)
 
-add_library(${PROJECT_NAME} STATIC ${MONOLITH_LIB_SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${MONOLITH_INCLUDE_PATH})
+add_library(${PROJECT_NAME} SHARED ${MONOLITH_LIB_SOURCES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${MONOLITH_INCLUDE_PATH}
+    PRIVATE ${LAB2_INCLUDE_PATH})
 
 add_executable(${PROJECT_NAME}-app ${MONOLITH_APP_SOURCES})
 # target_compile_options(${PROJECT_NAME} PRIVATE -O3 -march=native -funroll-loops)

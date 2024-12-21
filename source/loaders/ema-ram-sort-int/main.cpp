@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
       threads.push_back(
         std::thread(
           [input_file, output_file, chunk_size_mb]() {
-            ExternalMemorySorter::externalMemorySort(input_file, output_file, chunk_size_mb);
+            DirectIoExternalMemorySorter::externalMemorySort(input_file, output_file, chunk_size_mb);
           }
         )
       );
