@@ -16,7 +16,7 @@
 #include "../util/sorter_utils.hpp"
 
 // Generate a random binary file of uint32_t values
-void DirectIoExternalMemorySorter::generateRandomFile(const std::string& filename, size_t size_mb) {
+void ExternalMemorySorter::generateRandomFile(const std::string& filename, size_t size_mb) {
   std::ofstream file(filename, std::ios::binary);
   if (!file) {
     std::cerr << "Failed to open file for writing: " << filename << '\n';
@@ -42,7 +42,7 @@ void DirectIoExternalMemorySorter::generateRandomFile(const std::string& filenam
 }
 
 // Sort chunks of the input file and save them as temporary files
-void DirectIoExternalMemorySorter::sortByChunksAndSave(
+void ExternalMemorySorter::sortByChunksAndSave(
     const std::string& input_filename, const std::string& temp_directory, size_t chunk_size_mb
 ) {
   std::ifstream input(input_filename, std::ios::binary);
@@ -104,7 +104,7 @@ void DirectIoExternalMemorySorter::sortByChunksAndSave(
 }
 
 // Merge sorted chunks from temporary files into the output file
-void DirectIoExternalMemorySorter::mergeChunksAndSave(
+void ExternalMemorySorter::mergeChunksAndSave(
     const std::string& temp_directory,
     const std::string& input_filename,
     const std::string& output_filename,
@@ -188,7 +188,7 @@ void DirectIoExternalMemorySorter::mergeChunksAndSave(
 }
 
 // External memory sort implementation
-void DirectIoExternalMemorySorter::externalMemorySort(
+void ExternalMemorySorter::externalMemorySort(
     const std::string& input_filename, const std::string& output_filename, size_t chunk_size_mb
 ) {
 
@@ -220,7 +220,7 @@ void DirectIoExternalMemorySorter::externalMemorySort(
 }
 
 // Check if the file is sorted
-void DirectIoExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
+void ExternalMemorySorter::checkFileSorted(const std::string& input_filename) {
   std::ifstream input(input_filename, std::ios::binary);
   if (!input) {
     std::cerr << "Failed to open file for checking: " << input_filename << '\n';
@@ -266,7 +266,7 @@ void DirectIoExternalMemorySorter::checkFileSorted(const std::string& input_file
 }
 
 // Print help message
-void DirectIoExternalMemorySorter::printHelp() {
+void ExternalMemorySorter::printHelp() {
   std::cout << "Available subcommands:\n"
             << "\tgenerate <output_file> <size_mb>\n\t\tGenerate a random binary file of uint32_t "
                "values\n"

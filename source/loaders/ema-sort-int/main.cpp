@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[]) {
   if (argc < ArgcMin) {
-    DirectIoExternalMemorySorter::printHelp();
+    ExternalMemorySorter::printHelp();
     return 1;
   }
 
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     }
     std::string output_file = argv[2];
     size_t size_mb = std::stoull(argv[3]);
-    DirectIoExternalMemorySorter::generateRandomFile(output_file, size_mb);
+    ExternalMemorySorter::generateRandomFile(output_file, size_mb);
   } else if (command == "sort") {
     if (argc != ArgcForEmaSort) {
       std::cout << "Usage: prog sort <input_file> <output_file> <chunk_size_mb>" << '\n';
@@ -31,16 +31,16 @@ int main(int argc, char* argv[]) {
     std::string input_file = argv[2];
     std::string output_file = argv[3];
     size_t chunk_size_mb = std::stoull(argv[4]);
-    DirectIoExternalMemorySorter::externalMemorySort(input_file, output_file, chunk_size_mb);
+    ExternalMemorySorter::externalMemorySort(input_file, output_file, chunk_size_mb);
   } else if (command == "check") {
     if (argc != ArgcForCheck) {
       std::cout << "Usage: prog check <input_file>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
-    DirectIoExternalMemorySorter::checkFileSorted(input_file);
+    ExternalMemorySorter::checkFileSorted(input_file);
   } else if (command == "help") {
-    DirectIoExternalMemorySorter::printHelp();
+    ExternalMemorySorter::printHelp();
   } else if (command == "full-benchmark") {
     if (argc != ArgcForFull) {
       std::cout << "Usage: prog full-benchmark <input_file> <output_file> <repeat-count>" << '\n';
@@ -52,13 +52,13 @@ int main(int argc, char* argv[]) {
 
     // Fallback to sequential execution
     for (size_t i = 0; i < repeat_count; ++i) {
-      DirectIoExternalMemorySorter::generateRandomFile(input_file, FullBenchmarkFileSizeMb);
-      DirectIoExternalMemorySorter::externalMemorySort(input_file, output_file, FullBenchmarkChunkSizeMb);
-      DirectIoExternalMemorySorter::checkFileSorted(output_file);
+      ExternalMemorySorter::generateRandomFile(input_file, FullBenchmarkFileSizeMb);
+      ExternalMemorySorter::externalMemorySort(input_file, output_file, FullBenchmarkChunkSizeMb);
+      ExternalMemorySorter::checkFileSorted(output_file);
     }
   } else {
     std::cout << "Unknown subcommand: " << command << '\n';
-    DirectIoExternalMemorySorter::printHelp();
+    ExternalMemorySorter::printHelp();
     return 1;
   }
 

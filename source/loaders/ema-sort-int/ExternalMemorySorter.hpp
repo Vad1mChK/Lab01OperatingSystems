@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 
-class DirectIoExternalMemorySorter {
+class ExternalMemorySorter {
 private:
   static void sortByChunksAndSave(
       const std::string& input_filename, const std::string& temp_directory, size_t chunk_size_mb
