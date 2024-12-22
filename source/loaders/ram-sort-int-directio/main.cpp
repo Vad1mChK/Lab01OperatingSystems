@@ -4,13 +4,13 @@
 #include <iostream>
 #include <string>
 
-#include "RamMemorySorter.hpp"
+#include "DirectIoRamMemorySorter.hpp"
 #include "../../common/unistd_check.hpp"
 #include "../util/ema_ram_sorter_cli_constants.hpp"
 
 int main(int argc, char* argv[]) {
   if (argc < ArgcMin) {
-    RamMemorySorter::printHelp();
+    DirectIoRamMemorySorter::printHelp();
     return 1;
   }
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
     }
     std::string output_file = argv[2];
     size_t size_mb = std::stoull(argv[3]);
-    RamMemorySorter::generateRandomFile(output_file, size_mb);
+    DirectIoRamMemorySorter::generateRandomFile(output_file, size_mb);
   } else if (command == "sort") {
     if (argc != ArgcForRamSort) {
       std::cout << "Usage: prog sort <input_file> <output_file>" << '\n';
@@ -31,14 +31,14 @@ int main(int argc, char* argv[]) {
     }
     std::string input_file = argv[2];
     std::string output_file = argv[3];
-    RamMemorySorter::sortInMemory(input_file, output_file);
+    DirectIoRamMemorySorter::sortInMemory(input_file, output_file);
   } else if (command == "check") {
     if (argc != ArgcForCheck) {
       std::cout << "Usage: prog check <input_file>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
-    RamMemorySorter::checkFileSorted(input_file);
+    DirectIoRamMemorySorter::checkFileSorted(input_file);
   } else if (command == "full-benchmark") {
     if (argc != ArgcForFull) {
       std::cout << "Usage: prog full-benchmark <input_file> <output-file> <repeat-count>" << '\n';
@@ -50,15 +50,15 @@ int main(int argc, char* argv[]) {
 
     // Fallback to sequential execution
     for (size_t i = 0; i < repeat_count; ++i) {
-      RamMemorySorter::generateRandomFile(input_file, FullBenchmarkFileSizeMb);
-      RamMemorySorter::sortInMemory(input_file, output_file);
-      RamMemorySorter::checkFileSorted(output_file);
+      DirectIoRamMemorySorter::generateRandomFile(input_file, FullBenchmarkFileSizeMb);
+      DirectIoRamMemorySorter::sortInMemory(input_file, output_file);
+      DirectIoRamMemorySorter::checkFileSorted(output_file);
     }
   } else if (command == "help") {
-    RamMemorySorter::printHelp();
+    DirectIoRamMemorySorter::printHelp();
   } else {
     std::cout << "Unknown command: " << command << '\n';
-    RamMemorySorter::printHelp();
+    DirectIoRamMemorySorter::printHelp();
     return 1;
   }
 
