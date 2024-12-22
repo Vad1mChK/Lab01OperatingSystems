@@ -7,9 +7,11 @@
 class DirectIoRamMemorySorter {
 private:
   Lab2 lab2_;
+  const size_t bufferSizeBytes;
 public:
   explicit DirectIoRamMemorySorter(size_t cacheCapacity, size_t blockSize):
-    lab2_(cacheCapacity, blockSize) {}
+    lab2_(cacheCapacity, blockSize),
+    bufferSizeBytes(cacheCapacity * blockSize) {}
 
   // Generate a random binary file of uint32_t values
   void generateRandomFile(const std::string& filename, size_t size_mb);
@@ -22,6 +24,8 @@ public:
 
   // Print help information
   static void printHelp();
+
+  size_t getBufferSizeBytes() const { return bufferSizeBytes; }
 };
 
 #endif  // RAM_MEMORY_SORTER_HPP
