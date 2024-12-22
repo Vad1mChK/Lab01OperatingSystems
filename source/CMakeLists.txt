@@ -180,6 +180,22 @@ target_include_directories(ema-sort-int-directio PRIVATE ${LAB2_INCLUDE_DIR})
 # Link against the pre-built lab2_library.so
 target_link_libraries(ema-sort-int-directio PRIVATE ${LAB2_LIB})
 
+# Define the `ema-sort-int-directio` executable that links against the pre-built lab2_library.so
+add_executable(ram-sort-int-directio
+        loaders/util/sorter_utils.cpp
+        loaders/util/sorter_utils.hpp
+        loaders/ram-sort-int-directio/main.cpp
+        loaders/ram-sort-int-directio/DirectIoRamMemorySorter.hpp
+        loaders/ram-sort-int-directio/DirectIoRamMemorySorter.cpp
+        loaders/util/ema_ram_sorter_cli_constants.hpp
+)
+
+# Include the lab2_library headers
+target_include_directories(ram-sort-int-directio PRIVATE ${LAB2_INCLUDE_DIR})
+
+# Link against the pre-built lab2_library.so
+target_link_libraries(ram-sort-int-directio PRIVATE ${LAB2_LIB})
+
 # ----------------
 
 # Compilation Options for Optimization Levels
