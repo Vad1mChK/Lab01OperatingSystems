@@ -14,6 +14,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  DirectIoRamMemorySorter sorter(1024, LAB2_BLOCK_SIZE);
+
   std::string command = argv[1];
 
   if (command == "generate") {
@@ -23,7 +25,7 @@ int main(int argc, char* argv[]) {
     }
     std::string output_file = argv[2];
     size_t size_mb = std::stoull(argv[3]);
-    DirectIoRamMemorySorter::generateRandomFile(output_file, size_mb);
+    sorter.generateRandomFile(output_file, size_mb);
   } else if (command == "sort") {
     if (argc != ArgcForRamSort) {
       std::cout << "Usage: prog sort <input_file> <output_file>" << '\n';
@@ -31,14 +33,14 @@ int main(int argc, char* argv[]) {
     }
     std::string input_file = argv[2];
     std::string output_file = argv[3];
-    DirectIoRamMemorySorter::sortInMemory(input_file, output_file);
+    sorter.sortInMemory(input_file, output_file);
   } else if (command == "check") {
     if (argc != ArgcForCheck) {
       std::cout << "Usage: prog check <input_file>" << '\n';
       return 1;
     }
     std::string input_file = argv[2];
-    DirectIoRamMemorySorter::checkFileSorted(input_file);
+    sorter.checkFileSorted(input_file);
   } else if (command == "full-benchmark") {
     if (argc != ArgcForFull) {
       std::cout << "Usage: prog full-benchmark <input_file> <output-file> <repeat-count>" << '\n';
@@ -50,9 +52,9 @@ int main(int argc, char* argv[]) {
 
     // Fallback to sequential execution
     for (size_t i = 0; i < repeat_count; ++i) {
-      DirectIoRamMemorySorter::generateRandomFile(input_file, FullBenchmarkFileSizeMb);
-      DirectIoRamMemorySorter::sortInMemory(input_file, output_file);
-      DirectIoRamMemorySorter::checkFileSorted(output_file);
+      sorter.generateRandomFile(input_file, FullBenchmarkFileSizeMb);
+      sorter.sortInMemory(input_file, output_file);
+      sorter.checkFileSorted(output_file);
     }
   } else if (command == "help") {
     DirectIoRamMemorySorter::printHelp();
