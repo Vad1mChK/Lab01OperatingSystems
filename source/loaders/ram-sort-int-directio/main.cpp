@@ -4,9 +4,10 @@
 #include <iostream>
 #include <string>
 
-#include "DirectIoRamMemorySorter.hpp"
 #include "../../common/unistd_check.hpp"
 #include "../util/ema_ram_sorter_cli_constants.hpp"
+#include "../util/sorter_utils.hpp"
+#include "DirectIoRamMemorySorter.hpp"
 
 int main(int argc, char* argv[]) {
   if (argc < ArgcMin) {
@@ -14,7 +15,9 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  DirectIoRamMemorySorter sorter(1024, LAB2_BLOCK_SIZE);
+  size_t cacheSize = 128 * BytesInMb;
+  size_t blockSize = 1 * BytesInMb;
+  DirectIoRamMemorySorter sorter(cacheSize / blockSize, blockSize);
 
   std::string command = argv[1];
 
